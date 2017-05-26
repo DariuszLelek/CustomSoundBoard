@@ -1,4 +1,4 @@
-package com.omikronsoft.customsoundboard;
+package com.omikronsoft.customsoundboard.utils;
 
 import android.content.Context;
 

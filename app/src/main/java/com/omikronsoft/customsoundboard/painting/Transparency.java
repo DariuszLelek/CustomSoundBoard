@@ -1,4 +1,4 @@
-package com.omikronsoft.customsoundboard;
+package com.omikronsoft.customsoundboard.painting;
 
 /**
  * Created by Dariusz Lelek on 5/22/2017.
@@ -7,8 +7,10 @@ package com.omikronsoft.customsoundboard;
 
 public enum Transparency {
     OPAQUE(255),
+    V_HIGH(200),
     HALF(120),
-    LOW(60);
+    LOW(60),
+    V_LOW(10);
 
     int value;
 

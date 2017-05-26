@@ -1,4 +1,4 @@
-package com.omikronsoft.customsoundboard;
+package com.omikronsoft.customsoundboard.painting;
 
 /**
  * Created by Dariusz Lelek on 5/22/2017.

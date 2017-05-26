@@ -1,6 +1,8 @@
-package com.omikronsoft.customsoundboard;
+package com.omikronsoft.customsoundboard.painting;
 
 import android.graphics.Paint;
+
+import com.omikronsoft.customsoundboard.utils.Globals;
 
 import java.util.HashMap;
 import java.util.Map;

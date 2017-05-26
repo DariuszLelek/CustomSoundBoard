@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Button layout -->
+    <integer name="button_outline_width">2</integer>
+    <integer name="button_spacing_width_percent">1</integer>
+
+    <!-- Head Panel -->
+    <integer name="hp_height_width_percent">25</integer>
+    <integer name="background_edge_offset">10</integer>
+
+    <integer name="sound_button_rows">4</integer>
+    <integer name="sound_button_columns">4</integer>
+    <integer name="sound_buttons_offset">5</integer>
+</resources>
