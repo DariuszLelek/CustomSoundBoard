@@ -1,11 +1,15 @@
 package com.omikronsoft.customsoundboard.painting;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.omikronsoft.customsoundboard.utils.Globals;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.R.attr.radius;
+import static android.R.attr.width;
 
 /**
  * Created by Dariusz Lelek on 5/22/2017.
@@ -49,10 +53,14 @@ public class PaintingResources {
             paint.setColor(color);
             paint.setAlpha(trans.value);
             paint.setTextAlign(Paint.Align.CENTER);
-            paint.setStrokeJoin(Paint.Join.ROUND);
             paint.setAntiAlias(true);
             cachedPaints.put(pr, paint);
         }
+
+        if(paint.getTextAlign() != Paint.Align.CENTER){
+            paint.setTextAlign(Paint.Align.CENTER);
+        }
+
         return paint;
     }
 
@@ -72,15 +80,15 @@ public class PaintingResources {
         return paint;
     }
 
-    public Paint getStrokePaint(int width, int color, Transparency trans) {
+    public Paint getStrokePaint(int width, int color, Transparency trans, boolean densityWidth) {
         Paint paint;
         PaintingResource pr = new PaintingResource.Builder().color(color).transparency(trans.value).width(width).build();
         if (cachedPaints.containsKey(pr)) {
             paint = cachedPaints.get(pr);
         } else {
             paint = new Paint();
-            paint.setStrokeWidth(width * Globals.getInstance().getPixelDensity());
-            paint.setStrokeCap(Paint.Cap.ROUND);
+            paint.setStrokeWidth(densityWidth ? width * Globals.getInstance().getPixelDensity() : width);
+            //paint.setStrokeCap(Paint.Cap.ROUND);
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(color);
             paint.setAlpha(trans.value);

@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.PointF;
 
+import com.omikronsoft.customsoundboard.R;
 import com.omikronsoft.customsoundboard.layouts.SoundBoardLayout;
 import com.omikronsoft.customsoundboard.painting.PaintingResources;
 import com.omikronsoft.customsoundboard.panels.HeadPanelControl;
@@ -21,14 +22,25 @@ public class Globals {
     private float screenWidth2, screenHeight2, pixelDensity;
     private PointF screenCenter;
     private Resources resources;
-    private boolean dataPrepared;
+    private boolean dataPrepared, editMode, dataLoading;
+    private int rows, columns;
 
     public final static int ADD_HEIGHT = 50;
-    public final static boolean ADS_ENABLED = true;
+    public final static boolean ADS_ENABLED = false;
     public final static int MAX_FPS = 30;
 
     private Globals(){
         dataPrepared = false;
+        editMode = false;
+        dataLoading = false;
+    }
+
+    public boolean isDataLoading() {
+        return dataLoading;
+    }
+
+    public void setDataLoading(boolean dataLoading) {
+        this.dataLoading = dataLoading;
     }
 
     public SharedPreferences getPrefs() {
@@ -52,8 +64,25 @@ public class Globals {
         SoundBoardLayout.getInstance();
         HeadPanelControl.getInstance();
         SoundsPanelControl.getInstance();
+        AudioPlayer.getInstance();
 
         dataPrepared = true;
+    }
+
+    public boolean isEditMode() {
+        return editMode;
+    }
+
+    public void switchEditMode() {
+        this.editMode = !editMode;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
     }
 
     public boolean isDataPrepared() {

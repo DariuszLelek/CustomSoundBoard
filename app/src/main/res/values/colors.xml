@@ -8,7 +8,9 @@
 
 
     <color name="panel_back_color">#ffffff</color>
+    <color name="background">#333333</color>
 
-    <color name="button_back_light">#00B4CC</color>
-    <color name="button_color">#343838</color>
+    <color name="button_back_light">#A40802</color>
+    <color name="button_back_light_edit">#59A80F</color>
+    <color name="button_color">#0D0D0D</color>
 </resources>

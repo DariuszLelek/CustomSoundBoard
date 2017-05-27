@@ -6,14 +6,18 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.omikronsoft.customsoundboard.layouts.SoundBoardLayout;
 import com.omikronsoft.customsoundboard.painting.PaintingResources;
 import com.omikronsoft.customsoundboard.painting.Transparency;
 import com.omikronsoft.customsoundboard.panels.HeadPanelControl;
 import com.omikronsoft.customsoundboard.panels.SoundsPanelControl;
+import com.omikronsoft.customsoundboard.utils.ApplicationContext;
+import com.omikronsoft.customsoundboard.utils.AudioPlayer;
 import com.omikronsoft.customsoundboard.utils.Globals;
 
 /**
@@ -68,7 +72,8 @@ public class SoundBoardActivityControl extends SurfaceView implements Runnable {
                 // show splash screen
                 globals.prepareData();
             }else{
-                canvas.drawRect(0,0, globals.getScreenWidth(), globals.getScreenHeight(), paintRes.getFillPaint(Color.BLACK, Transparency.OPAQUE));
+               // canvas.drawRect(0,0, globals.getScreenWidth(), globals.getScreenHeight(), paintRes.getFillPaint(
+              //          ContextCompat.getColor(ApplicationContext.get(), R.color.background), Transparency.OPAQUE));
                 canvas.drawBitmap(backGround, 0,0, paintRes.getBitmapPaint(Transparency.OPAQUE));
 
                 headPanelCtrl.drawPanel(canvas);
@@ -92,8 +97,16 @@ public class SoundBoardActivityControl extends SurfaceView implements Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
+        if(!Globals.getInstance().isDataLoading()){
+            float x = event.getX();
+            float y = event.getY();
+
+            if(SoundsPanelControl.getInstance().getPanelArea().contains(x, y)){
+                SoundsPanelControl.getInstance().processClick(x, y - SoundBoardLayout.getInstance().getEditAreaHeight());
+            }else if(HeadPanelControl.getInstance().getPanelArea().contains(x,y)){
+                HeadPanelControl.getInstance().processClick(x, y);
+            }
+        }
 
         return super.onTouchEvent(event);
     }

@@ -1,0 +1,66 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="com.omikronsoft.customsoundboard.EditButtonActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/back"
+        android:id="@+id/linearLayout"
+        android:weightSum="1">
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_label"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textColor="@android:color/white" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="99dp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="198dp"
+            android:id="@+id/listView"
+            android:background="@android:color/white"
+            style="@style/Widget.AppCompat.ListView"
+            android:headerDividersEnabled="false" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:text="OK"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/ok_button"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="Cancel"
+                android:layout_height="wrap_content"
+                android:id="@+id/cancel_button"
+                android:layout_weight="1"
+                android:layout_width="0dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

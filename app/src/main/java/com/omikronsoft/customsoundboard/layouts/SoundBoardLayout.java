@@ -14,17 +14,26 @@ public class SoundBoardLayout {
     private static SoundBoardLayout instance;
     private Globals globals;
     private RectF soundsPanelArea, headPanelArea;
+    int editAreaHeight, bottomAddHeight;
 
 
     private SoundBoardLayout(){
         globals = Globals.getInstance();
         int screenWidth = globals.getScreenWidth();
         int screenHeight = globals.getScreenHeight();
-        int editAreaHeight =  screenWidth / (100 / globals.getResources().getInteger(R.integer.hp_height_width_percent));
-        int bottomAddOffset = Globals.ADS_ENABLED ? Globals.getInstance().getPixelSize(Globals.ADD_HEIGHT) : 0;
+        editAreaHeight =  screenWidth / (100 / globals.getResources().getInteger(R.integer.hp_height_width_percent));
+        bottomAddHeight = Globals.ADS_ENABLED ? Globals.getInstance().getPixelSize(Globals.ADD_HEIGHT) : 0;
 
         headPanelArea = new RectF(0,0, screenWidth, editAreaHeight);
-        soundsPanelArea = new RectF(0, editAreaHeight, screenWidth, screenHeight - bottomAddOffset);
+        soundsPanelArea = new RectF(0, editAreaHeight, screenWidth, screenHeight - bottomAddHeight);
+    }
+
+    public int getEditAreaHeight() {
+        return editAreaHeight;
+    }
+
+    public int getBottomAddHeight() {
+        return bottomAddHeight;
     }
 
     public RectF getSoundsPanelArea() {

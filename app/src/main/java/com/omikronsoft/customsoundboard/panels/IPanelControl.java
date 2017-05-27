@@ -10,5 +10,6 @@ import android.graphics.RectF;
 
 public interface IPanelControl {
     void drawPanel(Canvas canvas);
+    void processClick(float x, float y);
     RectF getPanelArea();
 }
