@@ -1,6 +1,7 @@
 package com.omikronsoft.customsoundboard.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 
 import com.omikronsoft.customsoundboard.R;
@@ -24,11 +25,15 @@ import java.util.List;
 
 public class SoundDataStorageControl {
     private static SoundDataStorageControl instance;
+    private SharedPreferences prefs;
 
     private final String SETUP = "sound_data_storage";
+    private final String SOUND_SAVE_FORMAT = "Sound"; // + "col,row" -> "1,2"
+    private final String SOUND_SAVE_FORMAT_SPLITTER = ",";
     private Context context;
 
     private SoundDataStorageControl(){
+        prefs = Globals.getInstance().getPrefs();
         context = ApplicationContext.get();
     }
 
@@ -46,38 +51,22 @@ public class SoundDataStorageControl {
         int columns =  Globals.getInstance().getResources().getInteger(R.integer.sound_button_columns);
         int rows =  Globals.getInstance().getResources().getInteger(R.integer.sound_button_rows);
 
-
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putBoolean("soundEnabled", soundEnabled);
+//        editor.apply();
+        //prefs.getFloat("bestScore", 0.0f);
 
         SoundData soundData[][] = new SoundData[columns][rows];
-        try {
-            InputStream is = getFileStream(SETUP);
-            if(is == null){
-                is = Globals.getInstance().getResources().openRawResource(R.raw.default_sound_data);
-            }
-            if(is != null){
-                InputStreamReader inputStreamReader = new InputStreamReader(is);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString;
+        String prefName;
 
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    String parts[] = receiveString.split(",");
-                    int column = Integer.parseInt(parts[0]);
-                    int row = Integer.parseInt(parts[1]);
-                    String name = parts[2];
-                    Uri path = Uri.parse(parts[3]);
+        for(int i=0; i<columns; i++){
+            for(int j=0; j<rows; j++){
+                prefName = SOUND_SAVE_FORMAT + i + SOUND_SAVE_FORMAT_SPLITTER + j;
+                String savedData = prefs.getString(prefName, "");
+                if(!savedData.isEmpty()){
 
-                    SoundData sd = new SoundData(column, row, name, path);
-                    if(column < columns && row < rows){
-                        soundData[column][row] = sd;
-                    }
                 }
-
-                is.close();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return soundData;

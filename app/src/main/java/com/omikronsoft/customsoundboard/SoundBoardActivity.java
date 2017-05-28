@@ -35,7 +35,7 @@ public class SoundBoardActivity extends AppCompatActivity {
         ApplicationContext.getInstance().init(getApplicationContext());
         Globals globals = Globals.getInstance();
 
-        SharedPreferences prefs = this.getSharedPreferences("FidgetSpinnerDefensePrefs", Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("CustomSoundBoard", Context.MODE_PRIVATE);
 
         globals.setPrefs(prefs);
         globals.setScreenSizes(size.x, size.y);
