@@ -8,6 +8,7 @@ import com.omikronsoft.customsoundboard.R;
 import com.omikronsoft.customsoundboard.layouts.SoundBoardLayout;
 import com.omikronsoft.customsoundboard.painting.PaintingResources;
 import com.omikronsoft.customsoundboard.panels.HeadPanelControl;
+import com.omikronsoft.customsoundboard.panels.SoundButtonData;
 import com.omikronsoft.customsoundboard.panels.SoundsPanelControl;
 
 /**
@@ -24,6 +25,7 @@ public class Globals {
     private Resources resources;
     private boolean dataPrepared, editMode, dataLoading;
     private int rows, columns;
+    private SoundButtonData editedButton;
 
     public final static int ADD_HEIGHT = 50;
     public final static boolean ADS_ENABLED = false;
@@ -55,6 +57,14 @@ public class Globals {
         screenHeight2 = screenHeight / 2;
 
         screenCenter = new PointF(screenWidth2, screenHeight2);
+    }
+
+    public SoundButtonData getEditedButton() {
+        return editedButton;
+    }
+
+    public void setEditedButton(SoundButtonData editedButton) {
+        this.editedButton = editedButton;
     }
 
     public void prepareData(){

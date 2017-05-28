@@ -42,12 +42,13 @@ public class SoundDataStorageControl {
         return is;
     }
 
-
     public SoundData[][] readSavedSoundsData(){
         int columns =  Globals.getInstance().getResources().getInteger(R.integer.sound_button_columns);
         int rows =  Globals.getInstance().getResources().getInteger(R.integer.sound_button_rows);
+
+
+
         SoundData soundData[][] = new SoundData[columns][rows];
-        List<SoundData> savedSoundsData = new ArrayList<>();
         try {
             InputStream is = getFileStream(SETUP);
             if(is == null){

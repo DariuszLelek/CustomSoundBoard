@@ -99,7 +99,6 @@ public class HeadPanelControl extends Panel implements IPanelControl {
             globals.switchEditMode();
             prepareHeadPanel();
             SoundsPanelControl.getInstance().prepareSoundsBoard();
-
             return;
         }
     }

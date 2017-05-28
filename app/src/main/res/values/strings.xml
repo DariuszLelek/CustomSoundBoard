@@ -6,4 +6,5 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="title_activity_edit_button">EditButtonActivity</string>
+    <string name="default_sound_path">android.resource://com.omikronsoft.customsoundboard/raw/</string>
 </resources>

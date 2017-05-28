@@ -23,9 +23,7 @@ public class SoundButtonData {
     public SoundButtonData(int column, int row) {
         this.row = row;
         this.column = column;
-        //soundData = new SoundData(column, row);
-        //empty = true;
-
+        soundData = new SoundData(column, row, "-", null);
     }
 
     public boolean isEmpty() {
@@ -58,5 +56,13 @@ public class SoundButtonData {
     public void setSoundData(SoundData soundData) {
         this.soundData = soundData;
         label = soundData.getName();
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public int getRow() {
+        return row;
     }
 }

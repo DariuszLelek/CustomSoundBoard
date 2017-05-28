@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
+import android.widget.Button;
 
 import com.omikronsoft.customsoundboard.EditButtonActivity;
 import com.omikronsoft.customsoundboard.R;
@@ -19,6 +20,7 @@ import com.omikronsoft.customsoundboard.painting.Transparency;
 import com.omikronsoft.customsoundboard.utils.ApplicationContext;
 import com.omikronsoft.customsoundboard.utils.Globals;
 import com.omikronsoft.customsoundboard.utils.SoundDataStorageControl;
+import com.omikronsoft.customsoundboard.utils.UpdateData;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import static android.R.attr.data;
 import static android.R.id.list;
 
 /**
@@ -37,9 +40,10 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
     private static SoundsPanelControl instance;
     private int columns, rows, columnWidth, rowHeight;
     private SoundButtonData[][] soundButtonData;
+    private SoundData[][] soundData;
     private Bitmap soundsBoard;
     private List<PlayIndicator> playIndicators;
-    private final Paint backPaintNormal, backPaintEdit, centerPaint;
+    private final Paint backPaintNormal, backPaintEdit, centerPaint, textPaint;
 
     private Canvas canvas;
 
@@ -59,8 +63,15 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         backPaintNormal = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_back_light), Transparency.HALF);
         backPaintEdit = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_back_light_edit), Transparency.HALF);
         centerPaint = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_color), Transparency.OPAQUE);
-        //textPaint = PaintingResources.getInstance().getTextPaintCenter(15, Color.WHITE, Transparency.OPAQUE);
+        textPaint = PaintingResources.getInstance().getTextPaintCenter(15, Color.WHITE, Transparency.OPAQUE);
 
+        readSoundData();
+        prepareSoundsBoard();
+    }
+
+    public void updateButtonData(SoundButtonData sbd){
+        // trigger save sbd
+        soundData[sbd.getColumn()][sbd.getRow()] = sbd.getSoundData();
         prepareSoundsBoard();
     }
 
@@ -75,10 +86,15 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
                 if(!Globals.getInstance().isEditMode()){
                     sbd.processClick();
                 }else{
+                    Globals.getInstance().setDataLoading(true);
+                    Globals.getInstance().setEditedButton(sbd);
                     Context context = ApplicationContext.get();
                     Intent i = new Intent(context, EditButtonActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    i.putExtra("ButtonCoords", col + "," + row);
+//                    i.putExtra("ButtonCoords", col + 1 + "," + row + 1);
+//                    i.putExtra("Column", row);
+//                    i.putExtra("Row", col);
+//                    i.putExtra("Name", sbd.getSoundData().getName());
                     context.startActivity(i);
                     //sbd.processClick();
                 }
@@ -128,13 +144,13 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         }
     }
 
+    private void readSoundData(){
+        Globals.getInstance().setDataLoading(true);
+        soundData = SoundDataStorageControl.getInstance().readSavedSoundsData();
+    }
 
     public void prepareSoundsBoard(){
-        Globals.getInstance().setDataLoading(true);
-
         soundButtonData = new SoundButtonData[columns][rows];
-        SoundData[][] soundData = SoundDataStorageControl.getInstance().readSavedSoundsData();
-
         soundsBoard = Bitmap.createBitmap((int)backGroundArea.width(), (int)backGroundArea.height(), Bitmap.Config.ARGB_8888);
         soundsBoard.eraseColor(Color.TRANSPARENT);
         canvas = new Canvas(soundsBoard);
@@ -173,8 +189,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
                 canvas.drawRect(left + outline, top + outline, right - outline, bottom - outline, centerPaint);
 
                 // button label
-                String label = sbd.getSoundData() != null ? sbd.getSoundData().getName() : "-";
-                canvas.drawText(label, left + buttonWidth/2, top + buttonHeight/2, PaintingResources.getInstance().getTextPaintCenter(15, Color.WHITE, Transparency.OPAQUE));
+                canvas.drawText(sbd.getSoundData().getName(), left + buttonWidth/2, top + buttonHeight/2, textPaint);
             }
         }
         Globals.getInstance().setDataLoading(false);

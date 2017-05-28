@@ -20,6 +20,7 @@ public class SoundData {
     private Uri path;
     private MediaPlayer media;
     private int duration;
+    private int delay;
 
     public SoundData(int column, int row, String name, Uri path) {
         this.column = column;
@@ -27,10 +28,22 @@ public class SoundData {
         this.name = name;
         this.path = path;
 
-        media = MediaPlayer.create(ApplicationContext.get(), path);
-        if(media != null){
-            duration = media.getDuration();
+        if(path != null){
+            media = MediaPlayer.create(ApplicationContext.get(), path);
+            if(media != null){
+                duration = media.getDuration();
+            }
         }
+
+        delay = 0;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
     }
 
     public String getName() {
