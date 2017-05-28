@@ -71,6 +71,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
 
     public void updateButtonData(SoundButtonData sbd){
         SoundData sd = sbd.getSoundData();
+
         SoundDataStorageControl.getInstance().saveSoundData(sd);
         soundData[sbd.getColumn()][sbd.getRow()] = sd;
         prepareSoundsBoard();

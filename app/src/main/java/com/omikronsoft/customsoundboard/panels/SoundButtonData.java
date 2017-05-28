@@ -5,7 +5,6 @@ import android.graphics.RectF;
 
 import com.omikronsoft.customsoundboard.SoundData;
 import com.omikronsoft.customsoundboard.utils.AudioPlayer;
-import com.omikronsoft.customsoundboard.utils.Globals;
 
 /**
  * Created by Dariusz Lelek on 5/26/2017.
@@ -23,7 +22,7 @@ public class SoundButtonData {
     public SoundButtonData(int column, int row) {
         this.row = row;
         this.column = column;
-        soundData = new SoundData(column, row, "-", null, 0);
+        soundData = new SoundData(column, row, "-", null, 0, "");
     }
 
     public boolean isEmpty() {
@@ -33,7 +32,7 @@ public class SoundButtonData {
     public void processClick(){
             if (soundData != null && soundData.getMedia() != null) {
                 SoundsPanelControl.getInstance().addPlayIndicator(new PlayIndicator(column, row, soundData.getDuration(), center, (int) area.width() / 3));
-                AudioPlayer.getInstance().playSound(soundData.getMedia());
+                AudioPlayer.getInstance().playWithOffset(soundData.getMedia(), soundData.getOffset());
             }
     }
 

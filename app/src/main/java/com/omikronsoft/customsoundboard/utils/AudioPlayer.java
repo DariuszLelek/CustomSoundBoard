@@ -15,14 +15,12 @@ import java.util.List;
 
 public class AudioPlayer {
     private static AudioPlayer instance;
-    private final MediaPlayer jeff, horn;
     private final List<MediaPlayer> activeMedia;
+    private MediaPlayer listItemCurrentlyPlaying;
     
     private AudioPlayer(){
         activeMedia = new ArrayList<>();
         Context context = ApplicationContext.get();
-        jeff = MediaPlayer.create(context, R.raw.jeff);
-        horn = MediaPlayer.create(context, R.raw.horn);
     }
 
     public void playSound(MediaPlayer media){
@@ -41,11 +39,36 @@ public class AudioPlayer {
         player.start();
     }
 
+    public void playListItem(MediaPlayer player, int offset){
+        stopPlayingListItem();
+        listItemCurrentlyPlaying = player;
+        listItemCurrentlyPlaying.seekTo(offset);
+        listItemCurrentlyPlaying.start();
+    }
+
+    public void stopPlayingListItem(){
+        if(listItemCurrentlyPlaying != null && listItemCurrentlyPlaying.isPlaying()){
+            listItemCurrentlyPlaying.pause();
+        }
+    }
+
+    public void playWithOffset(MediaPlayer player, int offset){
+        if(!activeMedia.contains(player)){
+            activeMedia.add(player);
+        }
+
+        if (player.isPlaying()) {
+            player.pause();
+            //player.seekTo(offset);
+        }
+        player.seekTo(offset);
+        player.start();
+    }
+
     public void stopAll(){
         for(MediaPlayer player : activeMedia){
             if (player.isPlaying()) {
                 player.pause();
-                player.seekTo(0);
             }
         }
     }

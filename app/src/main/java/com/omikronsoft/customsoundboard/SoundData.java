@@ -1,13 +1,8 @@
 package com.omikronsoft.customsoundboard;
 
 import android.media.MediaPlayer;
-import android.net.Uri;
 
-import com.omikronsoft.customsoundboard.utils.ApplicationContext;
-
-import java.net.URI;
-
-import static android.R.attr.path;
+import com.omikronsoft.customsoundboard.utils.StorageLocation;
 
 /**
  * Created by Dariusz Lelek on 5/27/2017.
@@ -17,32 +12,39 @@ import static android.R.attr.path;
 public class SoundData {
     int column, row;
     private String name;
-    private Uri path;
+    private String fileName;
+    private StorageLocation storageLoc;
     private MediaPlayer media;
     private int duration;
-    private int delay;
+    private int offset;
 
-    public SoundData(int column, int row, String name, Uri path, int delay) {
+    public SoundData(int column, int row, String name, MediaPlayer media, int offset, String fileName) {
         this.column = column;
         this.row = row;
         this.name = name;
-        this.path = path;
-        this.delay = delay;
+        this.offset = offset;
+        this.fileName = fileName;
+        this.media = media;
+        updateDuration();
+    }
 
-        if(path != null){
-            media = MediaPlayer.create(ApplicationContext.get(), path);
-            if(media != null){
-                duration = media.getDuration();
-            }
+    private void updateDuration(){
+        if (media != null) {
+            duration = media.getDuration() - offset;
         }
     }
 
-    public int getDelay() {
-        return delay;
+    public void setMedia(MediaPlayer media) {
+        this.media = media;
+        updateDuration();
     }
 
-    public void setDelay(int delay) {
-        this.delay = delay;
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     public String getName() {
@@ -53,12 +55,20 @@ public class SoundData {
         this.name = name;
     }
 
-    public Uri getPath() {
-        return path;
+    public StorageLocation getStorageLoc() {
+        return storageLoc;
     }
 
-    public void setPath(Uri path) {
-        this.path = path;
+    public void setStorageLoc(StorageLocation storageLoc) {
+        this.storageLoc = storageLoc;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public MediaPlayer getMedia() {
