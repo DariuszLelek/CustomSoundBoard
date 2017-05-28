@@ -70,8 +70,9 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
     }
 
     public void updateButtonData(SoundButtonData sbd){
-        // trigger save sbd
-        soundData[sbd.getColumn()][sbd.getRow()] = sbd.getSoundData();
+        SoundData sd = sbd.getSoundData();
+        SoundDataStorageControl.getInstance().saveSoundData(sd);
+        soundData[sbd.getColumn()][sbd.getRow()] = sd;
         prepareSoundsBoard();
     }
 
@@ -91,12 +92,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
                     Context context = ApplicationContext.get();
                     Intent i = new Intent(context, EditButtonActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    i.putExtra("ButtonCoords", col + 1 + "," + row + 1);
-//                    i.putExtra("Column", row);
-//                    i.putExtra("Row", col);
-//                    i.putExtra("Name", sbd.getSoundData().getName());
                     context.startActivity(i);
-                    //sbd.processClick();
                 }
             }
         }

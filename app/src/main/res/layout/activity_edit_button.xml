@@ -103,20 +103,14 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="334dp"
+            android:layout_height="280dp"
             android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:layout_weight="0.78">
+            android:paddingRight="6dp">
 
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="#000000"
-                android:dividerHeight="2px"
-                android:textColor="#000000"
-                android:id="@+id/listView"
-                android:background="@android:color/white"
-                android:headerDividersEnabled="false" />
+                android:id="@+id/list" />
         </FrameLayout>
 
         <LinearLayout

@@ -36,13 +36,13 @@ public class EditButtonActivity extends Activity {
         final EditText editTextName = (EditText)findViewById(R.id.sound_name_edit);
         final EditText editDelay = (EditText)findViewById(R.id.delay_edit);
         TextView t = (TextView)findViewById(R.id.button_label);
-        ListView listView = (ListView)findViewById(R.id.listView);
+        ListView listView = (ListView)findViewById(R.id.list);
         String[] pre = {"aaaa", "ssss", "Asasas", "assasa", "Asasa", "asassss", "adsdasd", "asdsad"};
         ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pre);
 
         t.setText("Edit Button " + (sbd.getColumn() + 1) + ", " + (sbd.getRow() + 1));
         editTextName.setText(sbd.getSoundData().getName());
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        //listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(adapter);
 
         (findViewById(R.id.btn_cancel)).setOnClickListener(new View.OnClickListener() {

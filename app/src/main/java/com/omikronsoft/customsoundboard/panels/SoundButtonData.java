@@ -23,7 +23,7 @@ public class SoundButtonData {
     public SoundButtonData(int column, int row) {
         this.row = row;
         this.column = column;
-        soundData = new SoundData(column, row, "-", null);
+        soundData = new SoundData(column, row, "-", null, 0);
     }
 
     public boolean isEmpty() {
