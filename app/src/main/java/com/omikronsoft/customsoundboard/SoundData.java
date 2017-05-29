@@ -45,6 +45,7 @@ public class SoundData {
 
     public void setOffset(int offset) {
         this.offset = offset;
+        updateDuration();
     }
 
     public String getName() {

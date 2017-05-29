@@ -51,9 +51,9 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         super();
         area = SoundBoardLayout.getInstance().getSoundsPanelArea();
 
-        columns = Globals.getInstance().getResources().getInteger(R.integer.sound_button_columns);
+        columns = Globals.getInstance().getColumns();
         columnWidth = Globals.getInstance().getScreenWidth() / columns;
-        rows = Globals.getInstance().getResources().getInteger(R.integer.sound_button_rows);
+        rows = Globals.getInstance().getRows();
         rowHeight = (int) area.height() / rows;
         int offset = backGroundOffset;
         backGroundArea = new RectF(area.left + offset, area.top + offset/2, area.right - offset, area.bottom - offset);
@@ -90,6 +90,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
                 }else{
                     Globals.getInstance().setDataLoading(true);
                     Globals.getInstance().setEditedButton(sbd);
+                    SoundDataStorageControl.getInstance().loadData();
                     Context context = ApplicationContext.get();
                     Intent i = new Intent(context, EditButtonActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -141,12 +142,12 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         }
     }
 
-    private void readSoundData(){
-        Globals.getInstance().setDataLoading(true);
+    public void readSoundData(){
         soundData = SoundDataStorageControl.getInstance().readSavedSoundsData();
     }
 
     public void prepareSoundsBoard(){
+        Globals.getInstance().setDataLoading(true);
         soundButtonData = new SoundButtonData[columns][rows];
         soundsBoard = Bitmap.createBitmap((int)backGroundArea.width(), (int)backGroundArea.height(), Bitmap.Config.ARGB_8888);
         soundsBoard.eraseColor(Color.TRANSPARENT);

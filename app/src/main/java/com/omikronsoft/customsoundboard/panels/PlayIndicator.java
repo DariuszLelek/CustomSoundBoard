@@ -59,7 +59,8 @@ public class PlayIndicator {
         PlayIndicator that = (PlayIndicator) o;
 
         if (column != that.column) return false;
-        return row == that.row;
+        if (row != that.row) return false;
+        return playDuration == that.playDuration;
 
     }
 
@@ -67,6 +68,7 @@ public class PlayIndicator {
     public int hashCode() {
         int result = column;
         result = 31 * result + row;
+        result = 31 * result + (int) (playDuration ^ (playDuration >>> 32));
         return result;
     }
 }

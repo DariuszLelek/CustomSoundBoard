@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.omikronsoft.customsoundboard.panels.SoundButtonData;
 import com.omikronsoft.customsoundboard.panels.SoundsPanelControl;
 import com.omikronsoft.customsoundboard.utils.AudioPlayer;
@@ -37,8 +36,9 @@ public class EditButtonActivity extends Activity {
     private CheckBox defaultCheck, userCheck, recordedCheck;
     private ListView listView;
     private SoundButtonData sbd;
-    private EditText editTextName, editDelay;
+    private EditText editTextName, editOffset;
     private String selectedListItem;
+    private MediaPlayer media;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,9 @@ public class EditButtonActivity extends Activity {
 
         sbd = Globals.getInstance().getEditedButton();
         editTextName = (EditText)findViewById(R.id.sound_name_edit);
-        editDelay = (EditText)findViewById(R.id.delay_edit);
+        editOffset = (EditText)findViewById(R.id.delay_edit);
+
+        editOffset.setText(String.valueOf(sbd.getSoundData().getOffset()));
 
         InputFilter[] filterArray = new InputFilter[1];
         filterArray[0] = new InputFilter.LengthFilter(10);
@@ -64,7 +66,7 @@ public class EditButtonActivity extends Activity {
 
         InputFilter[] filterArray2 = new InputFilter[1];
         filterArray2[0] = new InputFilter.LengthFilter(4);
-        editDelay.setFilters(filterArray2);
+        editOffset.setFilters(filterArray2);
 
         TextView t = (TextView)findViewById(R.id.button_label);
         listView = (ListView)findViewById(R.id.list);
@@ -104,11 +106,11 @@ public class EditButtonActivity extends Activity {
                 selectedListItem =(String) (listView.getItemAtPosition(position));
                 editTextName.setText(SoundDataStorageControl.getInstance().truncFilePrefix(selectedListItem));
 
-                StorageLocation storLoc = SoundDataStorageControl.getInstance().getSorageLocation(selectedListItem);
-                MediaPlayer media = SoundDataStorageControl.getInstance().getMedia(storLoc, selectedListItem);
+                StorageLocation storLoc = SoundDataStorageControl.getInstance().getStorageLocation(selectedListItem);
+                media = SoundDataStorageControl.getInstance().getMedia(storLoc, selectedListItem);
                 if(media != null && validateOffset()){
                     try{
-                        int offset = parseInt(editDelay.getText().toString());
+                        int offset = parseInt(editOffset.getText().toString());
                         AudioPlayer.getInstance().playListItem(media, offset);
                     }catch(NumberFormatException e){
                         // add log
@@ -133,11 +135,13 @@ public class EditButtonActivity extends Activity {
             public void onClick(View v) {
                 if(validForm()){
                     SoundData sd = sbd.getSoundData();
-                    StorageLocation storLoc = SoundDataStorageControl.getInstance().getSorageLocation(selectedListItem);
+                    StorageLocation storLoc = SoundDataStorageControl.getInstance().getStorageLocation(selectedListItem);
                     MediaPlayer media = SoundDataStorageControl.getInstance().getMedia(storLoc, selectedListItem);
 
-                    sd.setName(editTextName.getText().toString());
-                    sd.setOffset(parseInt(editDelay.getText().toString()));
+                    String name = editTextName.getText().toString().replaceAll(",", "");
+
+                    sd.setName(name);
+                    sd.setOffset(parseInt(editOffset.getText().toString()));
                     sd.setFileName(selectedListItem);
                     sd.setStorageLoc(storLoc);
                     sd.setMedia(media);
@@ -155,11 +159,11 @@ public class EditButtonActivity extends Activity {
     private boolean validateOffset(){
         boolean valid = true;
         try{
-            String offset = editDelay.getText().toString();
+            String offset = editOffset.getText().toString();
             if(offset.isEmpty()){
-                editDelay.setText("0");
+                editOffset.setText("0");
             }
-            parseInt(editDelay.getText().toString());
+            parseInt(editOffset.getText().toString());
         }catch(NumberFormatException e){
             // add log
             e.printStackTrace();
@@ -178,7 +182,7 @@ public class EditButtonActivity extends Activity {
         });
 
         userCheck = (CheckBox)findViewById(R.id.checkBox2);
-        defaultCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        userCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 updateDisplayList();
@@ -196,10 +200,15 @@ public class EditButtonActivity extends Activity {
             itemsToDisplay.addAll(SoundDataStorageControl.getInstance().getDefaultFolderFiles());
         }
 
+        if(userCheck.isChecked()){
+            itemsToDisplay.addAll(SoundDataStorageControl.getInstance().getUserFolderFiles());
+        }
+
         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
     }
 
     private void finishActivity(){
+        AudioPlayer.getInstance().stopMedia(media);
         Globals.getInstance().setEditedButton(null);
         finish();
     }

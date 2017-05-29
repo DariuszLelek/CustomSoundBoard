@@ -72,8 +72,8 @@ public class SoundBoardActivityControl extends SurfaceView implements Runnable {
                 // show splash screen
                 globals.prepareData();
             }else{
-               // canvas.drawRect(0,0, globals.getScreenWidth(), globals.getScreenHeight(), paintRes.getFillPaint(
-              //          ContextCompat.getColor(ApplicationContext.get(), R.color.background), Transparency.OPAQUE));
+                //canvas.drawRect(0,0, globals.getScreenWidth(), globals.getScreenHeight(), paintRes.getFillPaint(
+                //        ContextCompat.getColor(ApplicationContext.get(), R.color.background), Transparency.OPAQUE));
                 canvas.drawBitmap(backGround, 0,0, paintRes.getBitmapPaint(Transparency.OPAQUE));
 
                 headPanelCtrl.drawPanel(canvas);

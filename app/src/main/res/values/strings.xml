@@ -5,10 +5,14 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="user_folder_pref_name">user_folders</string>
     <string name="default_sounds_dir_name">default_sounds</string>
     <string name="default_sound_file_prefix">def_</string>
     <string name="recorded_sound_file_prefix">rec_</string>
+    <string name="audio_file_types">wav,mp3</string>
 
     <string name="title_activity_edit_button">EditButtonActivity</string>
     <string name="default_sound_directory">android.resource://com.omikronsoft.customsoundboard/raw/</string>
+
+    <string name="title_activity_options">OptionsActivity</string>
 </resources>

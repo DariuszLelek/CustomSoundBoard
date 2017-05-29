@@ -20,23 +20,6 @@ public class AudioPlayer {
     
     private AudioPlayer(){
         activeMedia = new ArrayList<>();
-        Context context = ApplicationContext.get();
-    }
-
-    public void playSound(MediaPlayer media){
-        play(media);
-    }
-
-    private void play(MediaPlayer player) {
-        if(!activeMedia.contains(player)){
-            activeMedia.add(player);
-        }
-
-        if (player.isPlaying()) {
-            player.pause();
-            player.seekTo(0);
-        }
-        player.start();
     }
 
     public void playListItem(MediaPlayer player, int offset){
@@ -70,6 +53,12 @@ public class AudioPlayer {
             if (player.isPlaying()) {
                 player.pause();
             }
+        }
+    }
+
+    public void stopMedia(MediaPlayer media){
+        if (media != null && media.isPlaying()) {
+            media.pause();
         }
     }
         

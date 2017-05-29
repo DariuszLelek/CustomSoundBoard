@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Environment;
 
 import com.omikronsoft.customsoundboard.R;
 import com.omikronsoft.customsoundboard.SoundData;
@@ -11,10 +13,13 @@ import com.omikronsoft.customsoundboard.SoundData;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import static com.omikronsoft.customsoundboard.utils.StorageLocation.REC_FORDER;
 import static java.lang.Integer.parseInt;
 
 /**
@@ -25,15 +30,16 @@ import static java.lang.Integer.parseInt;
 public class SoundDataStorageControl {
     private static SoundDataStorageControl instance;
     private SharedPreferences prefs;
-    private Map<String, Integer> soundFiles;
     private List<String> defaultFolderFiles;
-    private File defaultSoundsDir;
+    private Map<String, String> userFiles;
+    private List<String> userFolders;
+    private List<String> audioFileExtensions;
     private Resources res;
-    private String defSoundFilePrefix, recordedSoundFilePrefix;
+    private String defSoundFilePrefix, recordedSoundFilePrefix, userFoldersPrefName;
 
-    private final String SETUP = "sound_data_storage";
+    private final String SETUP = "user_dir";
     private final String SOUND_SAVE_PREFIX = "Sound"; // + "col,row" -> "1,2"
-    private final String SOUND_SAVE_FORMAT_SPLITTER = ",";
+    private final String SAVE_FORMAT_SPLITTER = ",";
     private Context context;
 
     private SoundDataStorageControl(){
@@ -42,12 +48,25 @@ public class SoundDataStorageControl {
         context = ApplicationContext.get();
 
         defaultFolderFiles = new ArrayList<>();
+        userFiles = new HashMap<>();
+        userFolders = new ArrayList<>();
+        audioFileExtensions = new ArrayList<>();
         defSoundFilePrefix = res.getString(R.string.default_sound_file_prefix);
         recordedSoundFilePrefix = res.getString(R.string.recorded_sound_file_prefix);
+        userFoldersPrefName = res.getString(R.string.user_folder_pref_name);
+        audioFileExtensions.addAll(Arrays.asList(res.getString(R.string.audio_file_types).split(SAVE_FORMAT_SPLITTER)));
 
-        soundFiles = new HashMap<>();
-        defaultSoundsDir = new File("/default_sounds/");
-        loadSoundFilesLoc();
+        loadUserFolders();
+
+        // init this when entering sound edit mode
+        loadData();
+    }
+
+    public void loadData(){
+        Globals.getInstance().setDataLoading(true);
+        loadDefaultSounds();
+        loadUserFoldersSounds();
+        Globals.getInstance().setDataLoading(false);
     }
 
     public void saveSoundData(SoundData sd){
@@ -58,21 +77,21 @@ public class SoundDataStorageControl {
 
     private String getPrefSoundKey(SoundData sd){
         StringBuilder result = new StringBuilder();
-        result.append(SOUND_SAVE_PREFIX).append(sd.getColumn()).append(SOUND_SAVE_FORMAT_SPLITTER).append(sd.getRow());
+        result.append(SOUND_SAVE_PREFIX).append(sd.getColumn()).append(SAVE_FORMAT_SPLITTER).append(sd.getRow());
         return result.toString();
     }
 
     private String getPrefSoundKey(int column, int row){
         StringBuilder result = new StringBuilder();
-        result.append(SOUND_SAVE_PREFIX).append(column).append(SOUND_SAVE_FORMAT_SPLITTER).append(row);
+        result.append(SOUND_SAVE_PREFIX).append(column).append(SAVE_FORMAT_SPLITTER).append(row);
         return result.toString();
     }
 
     private String getPrefSoundValue(SoundData sd){
         StringBuilder result = new StringBuilder();
-        result.append(sd.getName()).append(SOUND_SAVE_FORMAT_SPLITTER);
-        result.append(sd.getStorageLoc().value).append(SOUND_SAVE_FORMAT_SPLITTER);
-        result.append(sd.getFileName()).append(SOUND_SAVE_FORMAT_SPLITTER);
+        result.append(sd.getName()).append(SAVE_FORMAT_SPLITTER);
+        result.append(sd.getStorageLoc().value).append(SAVE_FORMAT_SPLITTER);
+        result.append(sd.getFileName()).append(SAVE_FORMAT_SPLITTER);
         result.append(sd.getOffset());
         return result.toString();
     }
@@ -83,7 +102,7 @@ public class SoundDataStorageControl {
         String savedData = prefs.getString(prefSoundKey, "");
 
         if(!savedData.isEmpty()){
-            String[] parts = savedData.split(SOUND_SAVE_FORMAT_SPLITTER);
+            String[] parts = savedData.split(SAVE_FORMAT_SPLITTER);
             if(dataIsValid(parts)){
                 String name = parts[0];
                 StorageLocation storageLoc = StorageLocation.fromInteger(parseInt(parts[1]));
@@ -91,7 +110,13 @@ public class SoundDataStorageControl {
                 int delay = parseInt(parts[3]);
 
                 MediaPlayer media = getMedia(storageLoc, fileName);
-                result = new SoundData(column, row, name, media, delay, fileName);
+
+                // check if sound is available in storage
+                if(media != null){
+                    result = new SoundData(column, row, name, media, delay, fileName);
+                }else{
+                    deleteSavedData(prefSoundKey);
+                }
             }else{
                 deleteSavedData(prefSoundKey);
             }
@@ -108,6 +133,15 @@ public class SoundDataStorageControl {
                 media = MediaPlayer.create(context, resID);
                 break;
             case USER_FOLDER:
+                if (userFiles.containsKey(fileName)) {
+                    try{
+                        Uri url = Uri.parse(userFiles.get(fileName));
+                        media = MediaPlayer.create(context, url);
+                    }catch (NullPointerException e){
+                        // logger
+                        e.printStackTrace();
+                    }
+                }
                 break;
             case REC_FORDER:
                 break;
@@ -118,8 +152,8 @@ public class SoundDataStorageControl {
     }
 
     public SoundData[][] readSavedSoundsData(){
-        int columns =  Globals.getInstance().getResources().getInteger(R.integer.sound_button_columns);
-        int rows =  Globals.getInstance().getResources().getInteger(R.integer.sound_button_rows);
+        int columns =  Globals.getInstance().getColumns();
+        int rows =  Globals.getInstance().getRows();
 
         SoundData soundData[][] = new SoundData[columns][rows];
 
@@ -137,6 +171,10 @@ public class SoundDataStorageControl {
 
     public List<String> getDefaultFolderFiles(){
         return defaultFolderFiles;
+    }
+
+    public Set<String> getUserFolderFiles(){
+        return userFiles.keySet();
     }
 
     private boolean dataIsValid(String[] parts){
@@ -160,11 +198,45 @@ public class SoundDataStorageControl {
         return valid;
     }
 
-    public StorageLocation getSorageLocation(String fileName){
+    public void addUserFolder(String folderName){
+        if(!userFolders.contains(folderName)){
+            userFolders.add(folderName);
+        }
+    }
+
+    public void removeUserFolder(String folderName){
+        if(userFolders.contains(folderName)){
+            userFolders.remove(folderName);
+        }
+
+
+    }
+
+    public void saveUserFolders(){
+        String saveData = android.text.TextUtils.join(",", userFolders);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(userFoldersPrefName, saveData);
+        editor.apply();
+    }
+
+    private void loadUserFolders(){
+        userFolders.clear();
+        for(String folder : prefs.getString(userFoldersPrefName, "").split(SAVE_FORMAT_SPLITTER)){
+            if(!folder.isEmpty()){
+                addUserFolder(folder);
+            }
+        }
+    }
+
+    public List<String> getUserFolders(){
+        return userFolders;
+    }
+
+    public StorageLocation getStorageLocation(String fileName){
         if(fileName.startsWith(defSoundFilePrefix)){
             return StorageLocation.DEFAULT_FOLDER;
         }else if(fileName.startsWith(recordedSoundFilePrefix)){
-            return StorageLocation.REC_FORDER;
+            return REC_FORDER;
         }else{
             return StorageLocation.USER_FOLDER;
         }
@@ -186,18 +258,54 @@ public class SoundDataStorageControl {
         editor.apply();
     }
 
-    private void loadSoundFilesLoc(){
-        Globals.getInstance().setDataLoading(true);
+    public void loadUserFoldersSounds(){
+        userFiles.clear();
+        for(String folderName : userFolders){
+            File folder = new File(Environment.getExternalStorageDirectory(), folderName);
+            if(folder.exists()){
+                File[] files = folder.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    File file = files[i];
+                    if (file.isFile() && isAudioFile(file) && !userFiles.containsKey(file.getName())) {
+                        userFiles.put(getFileName(file), file.getAbsolutePath());
+                    }
+                }
+            }
+        }
+    }
 
+    private String getFileName(File file){
+        String name = file.getName();
+        int pos = name.lastIndexOf(".");
+        if (pos > 0) {
+            name = name.substring(0, pos);
+        }
+        return name;
+    }
+
+    private String getFileExtension(File file){
+        String extension = "";
+        String path = file.getAbsolutePath();
+        int idx = path.lastIndexOf(".") + 1;
+        if (idx < path.length()) {
+            extension = path.substring(idx);
+        }
+        return extension;
+    }
+
+    private boolean isAudioFile(File file){
+        return audioFileExtensions.contains(getFileExtension(file));
+    }
+
+    private void loadDefaultSounds(){
+        defaultFolderFiles.clear();
         Field[] fields=R.raw.class.getFields();
         for(int count=0; count < fields.length; count++){
             String fileName = fields[count].getName();
-            if(fileName.startsWith(defSoundFilePrefix)){
+            if(fileName.startsWith(defSoundFilePrefix) && !defaultFolderFiles.contains(fileName)){
                 defaultFolderFiles.add(fileName);
             }
         }
-
-        Globals.getInstance().setDataLoading(false);
     }
 
     public synchronized static SoundDataStorageControl getInstance() {

@@ -37,10 +37,8 @@ public class SoundBoardActivity extends AppCompatActivity {
 
         SharedPreferences prefs = this.getSharedPreferences("CustomSoundBoard", Context.MODE_PRIVATE);
 
-
-        // temporary clean
-        //prefs.edit().remove("CustomSoundBoard").commit();
-
+        globals.setColumns(prefs.getInt("Columns", getResources().getInteger(R.integer.sound_button_columns)));
+        globals.setRows(prefs.getInt("Rows", getResources().getInteger(R.integer.sound_button_rows)));
         globals.setPrefs(prefs);
         globals.setScreenSizes(size.x, size.y);
         globals.setPixelDensity(getResources().getDisplayMetrics().density);

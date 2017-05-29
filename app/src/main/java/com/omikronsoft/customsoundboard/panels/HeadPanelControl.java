@@ -1,6 +1,7 @@
 package com.omikronsoft.customsoundboard.panels;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,6 +9,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
 
+import com.omikronsoft.customsoundboard.EditButtonActivity;
+import com.omikronsoft.customsoundboard.OptionsActivity;
 import com.omikronsoft.customsoundboard.R;
 import com.omikronsoft.customsoundboard.layouts.SoundBoardLayout;
 import com.omikronsoft.customsoundboard.painting.PaintingResources;
@@ -101,6 +104,16 @@ public class HeadPanelControl extends Panel implements IPanelControl {
             SoundsPanelControl.getInstance().prepareSoundsBoard();
             return;
         }
+
+        if(optionsButtonClickArea.contains(x, y)){
+            stopAll();
+            Globals.getInstance().setDataLoading(true);
+            Context context = ApplicationContext.get();
+            Intent i = new Intent(context, OptionsActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+            return;
+        }
     }
 
     private void stopAll(){
@@ -112,18 +125,6 @@ public class HeadPanelControl extends Panel implements IPanelControl {
     public void drawPanel(Canvas canvas) {
         super.drawPanelBackGround(canvas);
         canvas.drawBitmap(headPanel, 0, 0, PaintingResources.getInstance().getBitmapPaint(Transparency.OPAQUE));
-        //drawStopButton(canvas);
-    }
-
-    private void drawStopButton(Canvas canvas){
-        canvas.drawRect(stopButtonBackLight, backPaintNormal);
-        canvas.drawRect(stopButtonCenter, centerPaint);
-        canvas.drawText("Stop", stopButtonCenter.centerX(), stopButtonCenter.centerY(), PaintingResources.getInstance().getTextPaintCenter(15, Color.WHITE, Transparency.OPAQUE));
-
-        canvas.drawRect(editButtonBackLight, Globals.getInstance().isEditMode() ? backPaintEdit : backPaintNormal);
-        canvas.drawRect(editButtonCenter, centerPaint);
-        canvas.drawText("Edit", editButtonCenter.centerX(), editButtonCenter.centerY(), PaintingResources.getInstance().getTextPaintCenter(15, Color.WHITE, Transparency.OPAQUE));
-
     }
 
     @Override

@@ -87,12 +87,24 @@ public class Globals {
         this.editMode = !editMode;
     }
 
+    public void turnOffEditMode(){
+        this.editMode = false;
+    }
+
     public int getRows() {
         return rows;
     }
 
     public int getColumns() {
         return columns;
+    }
+
+    public void setColumns(int columns) {
+        this.columns = columns;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
     }
 
     public boolean isDataPrepared() {
