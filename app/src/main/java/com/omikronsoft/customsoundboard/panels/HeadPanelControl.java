@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
-
-import com.omikronsoft.customsoundboard.EditButtonActivity;
 import com.omikronsoft.customsoundboard.OptionsActivity;
 import com.omikronsoft.customsoundboard.R;
 import com.omikronsoft.customsoundboard.layouts.SoundBoardLayout;
@@ -29,22 +27,21 @@ public class HeadPanelControl extends Panel implements IPanelControl {
     private RectF stopButtonClickArea, stopButtonBackLight, stopButtonCenter,
             editButtonClickArea, editButtonBackLight, editButtonCenter,
             optionsButtonClickArea, optionsButtonBackLight, optionsButtonCenter;
-    private int buttonWidth;
     private final Paint backPaintNormal, centerPaint, textPaint, backPaintEdit;
     private final Globals globals;
     private Bitmap headPanel;
 
-    private HeadPanelControl(){
+    private HeadPanelControl() {
         super();
-
         globals = Globals.getInstance();
-
         area = SoundBoardLayout.getInstance().getHeadPanelArea();
+
         int offset = backGroundOffset;
-        super.backGroundArea = new RectF(area.left + offset, area.top + offset, area.right - offset, area.bottom - offset/2);
-        buttonWidth = (int) backGroundArea.width() / 4;
-        int buttonOffset =  Globals.getInstance().getPixelSize(Globals.getInstance().getResources().getInteger(R.integer.sound_buttons_offset));
+        super.backGroundArea = new RectF(area.left + offset, area.top + offset, area.right - offset, area.bottom - offset / 2);
+        int buttonWidth = (int) backGroundArea.width() / 4;
+        int buttonOffset = Globals.getInstance().getPixelSize(Globals.getInstance().getResources().getInteger(R.integer.sound_buttons_offset));
         int outline = Globals.getInstance().getPixelSize(Globals.getInstance().getResources().getInteger(R.integer.button_outline_width));
+
         stopButtonClickArea = new RectF(backGroundArea.left, backGroundArea.top, backGroundArea.left + buttonWidth, backGroundArea.bottom);
         stopButtonBackLight = new RectF(stopButtonClickArea.left + buttonOffset, stopButtonClickArea.top + buttonOffset,
                 stopButtonClickArea.right - buttonOffset, stopButtonClickArea.bottom - buttonOffset);
@@ -69,17 +66,54 @@ public class HeadPanelControl extends Panel implements IPanelControl {
         centerPaint = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_color), Transparency.OPAQUE);
         textPaint = PaintingResources.getInstance().getTextPaintCenter(15, Color.WHITE, Transparency.OPAQUE);
 
-        headPanel = Bitmap.createBitmap((int)area.width(), (int)area.height(), Bitmap.Config.ARGB_8888);
+        headPanel = Bitmap.createBitmap((int) area.width(), (int) area.height(), Bitmap.Config.ARGB_8888);
         prepareHeadPanel();
     }
 
-    public void prepareHeadPanel(){
+
+    @Override
+    public void drawPanel(Canvas canvas) {
+        super.drawPanelBackGround(canvas);
+        canvas.drawBitmap(headPanel, 0, 0, PaintingResources.getInstance().getBitmapPaint(Transparency.OPAQUE));
+    }
+
+    @Override
+    public void processClick(float x, float y) {
+        if (stopButtonClickArea.contains(x, y)) {
+            stopAll();
+            return;
+        }
+
+        if (editButtonClickArea.contains(x, y)) {
+            stopAll();
+            globals.switchEditMode();
+            prepareHeadPanel();
+            SoundsPanelControl.getInstance().prepareSoundsBoard();
+            return;
+        }
+
+        if (optionsButtonClickArea.contains(x, y)) {
+            stopAll();
+            Globals.getInstance().setDataLoading(true);
+            Context context = ApplicationContext.get();
+            Intent i = new Intent(context, OptionsActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        }
+    }
+
+    @Override
+    public RectF getPanelArea() {
+        return area;
+    }
+
+    private void prepareHeadPanel() {
         headPanel.eraseColor(Color.TRANSPARENT);
         Canvas canvas = new Canvas(headPanel);
 
         canvas.drawRect(stopButtonBackLight, backPaintNormal);
         canvas.drawRect(stopButtonCenter, centerPaint);
-        canvas.drawText("Stop", stopButtonCenter.centerX(), stopButtonCenter.centerY(),textPaint);
+        canvas.drawText("Stop", stopButtonCenter.centerX(), stopButtonCenter.centerY(), textPaint);
 
         canvas.drawRect(editButtonBackLight, Globals.getInstance().isEditMode() ? backPaintEdit : backPaintNormal);
         canvas.drawRect(editButtonCenter, centerPaint);
@@ -90,46 +124,9 @@ public class HeadPanelControl extends Panel implements IPanelControl {
         canvas.drawText("Options", optionsButtonCenter.centerX(), optionsButtonCenter.centerY(), textPaint);
     }
 
-    @Override
-    public void processClick(float x, float y) {
-        if(stopButtonClickArea.contains(x, y)){
-            stopAll();
-            return;
-        }
-
-        if(editButtonClickArea.contains(x, y)){
-            stopAll();
-            globals.switchEditMode();
-            prepareHeadPanel();
-            SoundsPanelControl.getInstance().prepareSoundsBoard();
-            return;
-        }
-
-        if(optionsButtonClickArea.contains(x, y)){
-            stopAll();
-            Globals.getInstance().setDataLoading(true);
-            Context context = ApplicationContext.get();
-            Intent i = new Intent(context, OptionsActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
-            return;
-        }
-    }
-
-    private void stopAll(){
+    private void stopAll() {
         AudioPlayer.getInstance().stopAll();
         SoundsPanelControl.getInstance().stopPlayIndicators();
-    }
-
-    @Override
-    public void drawPanel(Canvas canvas) {
-        super.drawPanelBackGround(canvas);
-        canvas.drawBitmap(headPanel, 0, 0, PaintingResources.getInstance().getBitmapPaint(Transparency.OPAQUE));
-    }
-
-    @Override
-    public RectF getPanelArea() {
-        return area;
     }
 
     public synchronized static HeadPanelControl getInstance() {

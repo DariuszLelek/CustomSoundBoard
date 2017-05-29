@@ -1,15 +1,11 @@
 package com.omikronsoft.customsoundboard.painting;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.omikronsoft.customsoundboard.utils.Globals;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.R.attr.radius;
-import static android.R.attr.width;
 
 /**
  * Created by Dariusz Lelek on 5/22/2017.
@@ -27,18 +23,18 @@ public class PaintingResources {
     }
 
     public Paint getBitmapPaint(Transparency transparency) {
-        Paint result;
+        Paint paint;
         if (bitmapPaints.containsKey(transparency)) {
-            result = bitmapPaints.get(transparency);
+            paint = bitmapPaints.get(transparency);
         } else {
-            result = new Paint();
-            result.setAntiAlias(true);
-            result.setFilterBitmap(true);
-            result.setDither(true);
-            result.setAlpha(transparency.value);
-            bitmapPaints.put(transparency, result);
+            paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setFilterBitmap(true);
+            paint.setDither(true);
+            paint.setAlpha(transparency.value);
+            bitmapPaints.put(transparency, paint);
         }
-        return result;
+        return paint;
     }
 
     public Paint getTextPaintCenter(int width, int color, Transparency trans) {
@@ -57,10 +53,9 @@ public class PaintingResources {
             cachedPaints.put(pr, paint);
         }
 
-        if(paint.getTextAlign() != Paint.Align.CENTER){
+        if (paint.getTextAlign() != Paint.Align.CENTER) {
             paint.setTextAlign(Paint.Align.CENTER);
         }
-
         return paint;
     }
 
@@ -88,7 +83,6 @@ public class PaintingResources {
         } else {
             paint = new Paint();
             paint.setStrokeWidth(densityWidth ? width * Globals.getInstance().getPixelDensity() : width);
-            //paint.setStrokeCap(Paint.Cap.ROUND);
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(color);
             paint.setAlpha(trans.value);

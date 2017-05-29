@@ -8,8 +8,10 @@ import android.graphics.RectF;
  * dariusz.lelek@gmail.com
  */
 
-public interface IPanelControl {
+interface IPanelControl {
     void drawPanel(Canvas canvas);
+
     void processClick(float x, float y);
+
     RectF getPanelArea();
 }

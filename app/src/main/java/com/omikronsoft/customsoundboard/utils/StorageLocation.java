@@ -8,18 +8,17 @@ package com.omikronsoft.customsoundboard.utils;
 public enum StorageLocation {
     DEFAULT_FOLDER(0),
     USER_FOLDER(1),
-    REC_FORDER(2);
+    REC_FOLDER(2);
 
     public int value;
-    public String fileName;
 
     StorageLocation(int value) {
         this.value = value;
     }
 
-    public static StorageLocation fromInteger(int value){
+    public static StorageLocation fromInteger(int value) {
         StorageLocation result = DEFAULT_FOLDER;
-        switch (value){
+        switch (value) {
             case 0:
                 result = DEFAULT_FOLDER;
                 break;
@@ -27,7 +26,7 @@ public enum StorageLocation {
                 result = USER_FOLDER;
                 break;
             case 2:
-                result = REC_FORDER;
+                result = REC_FOLDER;
                 break;
             default:
                 break;

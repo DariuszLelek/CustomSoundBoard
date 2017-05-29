@@ -2,9 +2,7 @@ package com.omikronsoft.customsoundboard.utils;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.PointF;
 
-import com.omikronsoft.customsoundboard.R;
 import com.omikronsoft.customsoundboard.layouts.SoundBoardLayout;
 import com.omikronsoft.customsoundboard.painting.PaintingResources;
 import com.omikronsoft.customsoundboard.panels.HeadPanelControl;
@@ -19,19 +17,17 @@ import com.omikronsoft.customsoundboard.panels.SoundsPanelControl;
 public class Globals {
     private static Globals instance;
     private SharedPreferences prefs;
-    private int screenWidth, screenHeight;
-    private float screenWidth2, screenHeight2, pixelDensity;
-    private PointF screenCenter;
+    private int rows, columns, screenWidth, screenHeight;
+    private float pixelDensity;
     private Resources resources;
     private boolean dataPrepared, editMode, dataLoading;
-    private int rows, columns;
     private SoundButtonData editedButton;
 
     public final static int ADD_HEIGHT = 50;
     public final static boolean ADS_ENABLED = false;
-    public final static int MAX_FPS = 30;
+    private final static int MAX_FPS = 30;
 
-    private Globals(){
+    private Globals() {
         dataPrepared = false;
         editMode = false;
         dataLoading = false;
@@ -45,18 +41,13 @@ public class Globals {
         this.dataLoading = dataLoading;
     }
 
-    public SharedPreferences getPrefs() {
+    SharedPreferences getPrefs() {
         return prefs;
     }
 
     public void setScreenSizes(int width, int height) {
         screenWidth = width;
         screenHeight = height;
-
-        screenWidth2 = screenWidth / 2;
-        screenHeight2 = screenHeight / 2;
-
-        screenCenter = new PointF(screenWidth2, screenHeight2);
     }
 
     public SoundButtonData getEditedButton() {
@@ -67,7 +58,7 @@ public class Globals {
         this.editedButton = editedButton;
     }
 
-    public void prepareData(){
+    public void prepareData() {
         // init singletons
         PaintingResources.getInstance();
 
@@ -85,10 +76,6 @@ public class Globals {
 
     public void switchEditMode() {
         this.editMode = !editMode;
-    }
-
-    public void turnOffEditMode(){
-        this.editMode = false;
     }
 
     public int getRows() {
@@ -145,14 +132,6 @@ public class Globals {
 
     public int getScreenWidth() {
         return screenWidth;
-    }
-
-    public float getScreenWidth2() {
-        return screenWidth2;
-    }
-
-    public float getScreenHeight2() {
-        return screenHeight2;
     }
 
     public synchronized static Globals getInstance() {

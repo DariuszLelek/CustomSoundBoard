@@ -4,20 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import com.omikronsoft.customsoundboard.layouts.SoundBoardLayout;
 import com.omikronsoft.customsoundboard.painting.PaintingResources;
 import com.omikronsoft.customsoundboard.painting.Transparency;
 import com.omikronsoft.customsoundboard.panels.HeadPanelControl;
 import com.omikronsoft.customsoundboard.panels.SoundsPanelControl;
-import com.omikronsoft.customsoundboard.utils.ApplicationContext;
-import com.omikronsoft.customsoundboard.utils.AudioPlayer;
 import com.omikronsoft.customsoundboard.utils.Globals;
 
 /**
@@ -35,7 +29,6 @@ public class SoundBoardActivityControl extends SurfaceView implements Runnable {
 
     private final Globals globals;
     private final PaintingResources paintRes = PaintingResources.getInstance();
-
     private final int FRAME_PERIOD = 1000 / Globals.getMaxFps(); // the frame period
 
     public SoundBoardActivityControl(Context context) {
@@ -45,7 +38,6 @@ public class SoundBoardActivityControl extends SurfaceView implements Runnable {
         thread = null;
         canDraw = false;
         surfaceHolder = getHolder();
-
 
         backGround = BitmapFactory.decodeResource(globals.getResources(), R.drawable.back);
         float xScale, yScale;
@@ -69,9 +61,9 @@ public class SoundBoardActivityControl extends SurfaceView implements Runnable {
             Canvas canvas = surfaceHolder.lockCanvas();
 
             if(!globals.isDataPrepared()){
-                // show splash screen
                 globals.prepareData();
             }else{
+                // blank background
                 //canvas.drawRect(0,0, globals.getScreenWidth(), globals.getScreenHeight(), paintRes.getFillPaint(
                 //        ContextCompat.getColor(ApplicationContext.get(), R.color.background), Transparency.OPAQUE));
                 canvas.drawBitmap(backGround, 0,0, paintRes.getBitmapPaint(Transparency.OPAQUE));

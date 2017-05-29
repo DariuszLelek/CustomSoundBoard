@@ -10,7 +10,6 @@ import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -66,7 +65,7 @@ public class SoundBoardActivity extends AppCompatActivity {
 
             // Test Ads
             AdRequest adRequest = new AdRequest.Builder().addTestDevice(getResources().getString(R.string.test_device_id)).build();
-            //AdRequest adRequest = new AdRequest.Builder().build();
+            // AdRequest adRequest = new AdRequest.Builder().build();
 
             adView.loadAd(adRequest);
         }

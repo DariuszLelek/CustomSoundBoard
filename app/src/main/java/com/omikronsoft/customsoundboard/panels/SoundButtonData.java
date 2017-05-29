@@ -12,49 +12,38 @@ import com.omikronsoft.customsoundboard.utils.AudioPlayer;
  */
 
 public class SoundButtonData {
-    private String label;
-    private boolean empty;
     private int row, column;
     private RectF area;
     private PointF center;
     private SoundData soundData;
 
-    public SoundButtonData(int column, int row) {
+    SoundButtonData(int column, int row) {
         this.row = row;
         this.column = column;
         soundData = new SoundData(column, row, "-", null, 0, "");
     }
 
-    public boolean isEmpty() {
-        return empty;
+    void processClick() {
+        if (soundData != null && soundData.getMedia() != null) {
+            SoundsPanelControl.getInstance().addPlayIndicator(new PlayIndicator(column, row, soundData.getDuration(), center, (int) area.width() / 3));
+            AudioPlayer.getInstance().playWithOffset(soundData.getMedia(), soundData.getOffset());
+        }
     }
 
-    public void processClick(){
-            if (soundData != null && soundData.getMedia() != null) {
-                SoundsPanelControl.getInstance().addPlayIndicator(new PlayIndicator(column, row, soundData.getDuration(), center, (int) area.width() / 3));
-                AudioPlayer.getInstance().playWithOffset(soundData.getMedia(), soundData.getOffset());
-            }
-    }
-
-    public void setCenter(PointF center){
+    void setCenter(PointF center) {
         this.center = center;
     }
 
-    public void setArea(RectF area){
+    void setArea(RectF area) {
         this.area = area;
-    }
-
-    public RectF getArea() {
-        return area;
     }
 
     public SoundData getSoundData() {
         return soundData;
     }
 
-    public void setSoundData(SoundData soundData) {
+    void setSoundData(SoundData soundData) {
         this.soundData = soundData;
-        label = soundData.getName();
     }
 
     public int getColumn() {

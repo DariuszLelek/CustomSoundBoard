@@ -9,8 +9,6 @@ import com.omikronsoft.customsoundboard.painting.PaintingResources;
 import com.omikronsoft.customsoundboard.painting.Transparency;
 import com.omikronsoft.customsoundboard.utils.Globals;
 
-import static android.R.attr.offset;
-
 /**
  * Created by Dariusz Lelek on 5/26/2017.
  * dariusz.lelek@gmail.com
@@ -25,7 +23,7 @@ public class Panel {
         backGroundOffset = Globals.getInstance().getPixelSize(Globals.getInstance().getResources().getInteger(R.integer.background_edge_offset));
     }
 
-    public void drawPanelBackGround(Canvas canvas) {
+    void drawPanelBackGround(Canvas canvas) {
         canvas.drawRect(backGroundArea, PaintingResources.getInstance().getFillPaint(Color.WHITE, Transparency.V_LOW));
     }
 }
