@@ -9,7 +9,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.omikronsoft.customsoundboard.R;
-import com.omikronsoft.customsoundboard.SoundData;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -38,8 +37,8 @@ public class SoundDataStorageControl {
     private Resources res;
     private String defSoundFilePrefix, recordedSoundFilePrefix, userFoldersPrefName;
 
-    private final String SOUND_SAVE_PREFIX = "Sound"; // + "col,row" -> "1,2"
-    private final String SAVE_FORMAT_SPLITTER = ",";
+    public static final String SOUND_SAVE_PREFIX = "Sound"; // + "col,row" -> "1,2"
+    public static final String SAVE_FORMAT_SPLITTER = ",";
     private Context context;
 
     private SoundDataStorageControl() {
@@ -58,7 +57,6 @@ public class SoundDataStorageControl {
 
         loadUserFolders();
 
-        // init this when entering sound edit mode
         loadData();
     }
 
@@ -138,8 +136,6 @@ public class SoundDataStorageControl {
         if (userFolders.contains(folderName)) {
             userFolders.remove(folderName);
         }
-
-
     }
 
     public void saveUserFolders() {

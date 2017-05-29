@@ -2,7 +2,6 @@ package com.omikronsoft.customsoundboard.utils;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-
 import com.omikronsoft.customsoundboard.layouts.SoundBoardLayout;
 import com.omikronsoft.customsoundboard.painting.PaintingResources;
 import com.omikronsoft.customsoundboard.panels.HeadPanelControl;
@@ -24,8 +23,9 @@ public class Globals {
     private SoundButtonData editedButton;
 
     public final static int ADD_HEIGHT = 50;
-    public final static boolean ADS_ENABLED = false;
+    public final static boolean ADS_ENABLED = true;
     private final static int MAX_FPS = 30;
+    private final String DEF_PREF_KEY = "DefaultButtonsSetup";
 
     private Globals() {
         dataPrepared = false;
@@ -104,6 +104,41 @@ public class Globals {
 
     public void setResources(Resources resources) {
         this.resources = resources;
+    }
+
+    public void loadDefaultSetup(){
+        boolean containsDefaultSetup = prefs.getBoolean(DEF_PREF_KEY, false);
+        if(!containsDefaultSetup){
+            String prefix = SoundDataStorageControl.SOUND_SAVE_PREFIX;
+            String splitter = SoundDataStorageControl.SAVE_FORMAT_SPLITTER;
+
+            int defCols = 3;
+            int defRows = 2;
+
+            StringBuilder sb;
+            SharedPreferences.Editor edit = prefs.edit();
+
+            String[][] defSetup = new String[defCols][defRows];
+
+            defSetup[0][0] = "horn,0,def_horn,0";
+            defSetup[0][1] = "dejavu,0,def_dejavu,0";
+            defSetup[1][0] = "drama,0,def_drama,0";
+            defSetup[1][1] = "jeff,0,def_jeff,0";
+            defSetup[2][0] = "veg_juice,0,def_veg_juice,0";
+            defSetup[2][1] = "nope,0,def_nope,0";
+
+            for(int i=0; i<defCols; i++){
+                for(int j=0; j<defRows; j++){
+                    sb = new StringBuilder();
+                    sb.append(prefix).append(i).append(splitter).append(j);
+
+                    edit.putString(sb.toString(), defSetup[i][j]);
+                }
+            }
+
+            edit.putBoolean(DEF_PREF_KEY, true);
+            edit.apply();
+        }
     }
 
     public static int getMaxFps() {

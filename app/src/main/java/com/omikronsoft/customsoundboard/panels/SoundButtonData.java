@@ -3,7 +3,7 @@ package com.omikronsoft.customsoundboard.panels;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
-import com.omikronsoft.customsoundboard.SoundData;
+import com.omikronsoft.customsoundboard.utils.SoundData;
 import com.omikronsoft.customsoundboard.utils.AudioPlayer;
 
 /**

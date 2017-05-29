@@ -42,6 +42,7 @@ public class SoundBoardActivity extends AppCompatActivity {
         globals.setScreenSizes(size.x, size.y);
         globals.setPixelDensity(getResources().getDisplayMetrics().density);
         globals.setResources(getResources());
+        globals.loadDefaultSetup();
 
         RelativeLayout layout = new RelativeLayout(this);
         soundBoardActivityControl = new SoundBoardActivityControl(this);
@@ -64,8 +65,8 @@ public class SoundBoardActivity extends AppCompatActivity {
             layout.addView(adView);
 
             // Test Ads
-            AdRequest adRequest = new AdRequest.Builder().addTestDevice(getResources().getString(R.string.test_device_id)).build();
-            // AdRequest adRequest = new AdRequest.Builder().build();
+            //AdRequest adRequest = new AdRequest.Builder().addTestDevice(getResources().getString(R.string.test_device_id)).build();
+            AdRequest adRequest = new AdRequest.Builder().build();
 
             adView.loadAd(adRequest);
         }

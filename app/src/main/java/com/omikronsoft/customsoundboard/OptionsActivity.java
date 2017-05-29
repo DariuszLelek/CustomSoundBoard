@@ -42,6 +42,7 @@ public class OptionsActivity extends Activity {
         folderList = (ListView) findViewById(R.id.list);
         List<String> userFolders = SoundDataStorageControl.getInstance().getUserFolders();
         folderList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userFolders));
+        folderList.setLongClickable(true);
 
         prepareButtonListeners();
         prepareListListener();

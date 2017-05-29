@@ -12,7 +12,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.omikronsoft.customsoundboard.EditButtonActivity;
 import com.omikronsoft.customsoundboard.R;
-import com.omikronsoft.customsoundboard.SoundData;
+import com.omikronsoft.customsoundboard.utils.SoundData;
 import com.omikronsoft.customsoundboard.layouts.SoundBoardLayout;
 import com.omikronsoft.customsoundboard.painting.PaintingResources;
 import com.omikronsoft.customsoundboard.painting.Transparency;

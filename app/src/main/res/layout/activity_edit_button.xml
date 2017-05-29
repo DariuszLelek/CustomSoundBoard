@@ -158,15 +158,6 @@
                         android:textSize="12sp"
                         style="@android:style/Widget.CompoundButton.CheckBox" />
 
-                    <CheckBox
-                        android:text="Records"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/checkBox3"
-                        android:layout_weight="1"
-                        android:textSize="12sp"
-                        style="@android:style/Widget.CompoundButton.CheckBox" />
-
                 </LinearLayout>
 
                 <LinearLayout

@@ -1,7 +1,6 @@
-package com.omikronsoft.customsoundboard;
+package com.omikronsoft.customsoundboard.utils;
 
 import android.media.MediaPlayer;
-import com.omikronsoft.customsoundboard.utils.StorageLocation;
 
 /**
  * Created by Dariusz Lelek on 5/27/2017.
@@ -42,7 +41,7 @@ public class SoundData {
         return offset;
     }
 
-    void setOffset(int offset) {
+    public void setOffset(int offset) {
         this.offset = offset;
         updateDuration();
     }
@@ -55,11 +54,11 @@ public class SoundData {
         this.name = name;
     }
 
-    public StorageLocation getStorageLoc() {
+    StorageLocation getStorageLoc() {
         return storageLoc;
     }
 
-    void setStorageLoc(StorageLocation storageLoc) {
+    public void setStorageLoc(StorageLocation storageLoc) {
         this.storageLoc = storageLoc;
     }
 
@@ -67,7 +66,7 @@ public class SoundData {
         return fileName;
     }
 
-    void setFileName(String fileName) {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
@@ -79,11 +78,11 @@ public class SoundData {
         return duration;
     }
 
-    public int getRow() {
+    int getRow() {
         return row;
     }
 
-    public int getColumn() {
+    int getColumn() {
         return column;
     }
 }

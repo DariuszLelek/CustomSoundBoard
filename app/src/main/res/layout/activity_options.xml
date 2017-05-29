@@ -179,18 +179,11 @@
                 android:textAlignment="center"
                 android:paddingTop="12dp" />
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
-
-                <ListView
-                    android:layout_width="match_parent"
-                    android:id="@+id/list"
-                    android:layout_height="150dp"
-                    android:paddingLeft="0dp" />
-            </FrameLayout>
+            <ListView
+                android:layout_width="match_parent"
+                android:id="@+id/list"
+                android:paddingLeft="0dp"
+                android:layout_height="140dp" />
 
             <LinearLayout
                 android:orientation="vertical"

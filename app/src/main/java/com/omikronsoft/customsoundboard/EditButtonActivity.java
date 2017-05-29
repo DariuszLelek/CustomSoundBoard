@@ -19,11 +19,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.omikronsoft.customsoundboard.panels.SoundButtonData;
 import com.omikronsoft.customsoundboard.panels.SoundsPanelControl;
 import com.omikronsoft.customsoundboard.utils.AudioPlayer;
 import com.omikronsoft.customsoundboard.utils.Globals;
+import com.omikronsoft.customsoundboard.utils.SoundData;
 import com.omikronsoft.customsoundboard.utils.SoundDataStorageControl;
 import com.omikronsoft.customsoundboard.utils.StorageLocation;
 import java.util.ArrayList;
@@ -188,9 +188,6 @@ public class EditButtonActivity extends Activity {
                 updateDisplayList();
             }
         });
-
-        CheckBox recordedCheck = (CheckBox) findViewById(R.id.checkBox3);
-        recordedCheck.setEnabled(false);
     }
 
     private void updateDisplayList() {
