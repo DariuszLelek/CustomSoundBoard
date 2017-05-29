@@ -53,7 +53,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         backPaintNormal = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_back_light), Transparency.HALF);
         backPaintEdit = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_back_light_edit), Transparency.HALF);
         centerPaint = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_color), Transparency.OPAQUE);
-        textPaint = PaintingResources.getInstance().getTextPaintCenter(15, Color.WHITE, Transparency.OPAQUE);
+        textPaint = PaintingResources.getInstance().getTextPaintCenter(Globals.getInstance().getResources().getInteger(R.integer.button_text_sp), Color.WHITE, Transparency.OPAQUE);
 
         readSoundData();
         prepareSoundsBoard();

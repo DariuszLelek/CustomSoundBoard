@@ -1,6 +1,8 @@
 package com.omikronsoft.customsoundboard.painting;
 
+import android.content.res.Resources;
 import android.graphics.Paint;
+import android.util.TypedValue;
 
 import com.omikronsoft.customsoundboard.utils.Globals;
 
@@ -16,10 +18,13 @@ public class PaintingResources {
     private static PaintingResources instance;
     private Map<PaintingResource, Paint> cachedPaints;
     private Map<Transparency, Paint> bitmapPaints;
+    private Resources res;
 
     private PaintingResources() {
         cachedPaints = new HashMap<>();
         bitmapPaints = new HashMap<>();
+
+        res = Globals.getInstance().getResources();
     }
 
     public Paint getBitmapPaint(Transparency transparency) {
@@ -37,14 +42,14 @@ public class PaintingResources {
         return paint;
     }
 
-    public Paint getTextPaintCenter(int width, int color, Transparency trans) {
+    public Paint getTextPaintCenter(int spSize, int color, Transparency trans) {
         Paint paint;
-        PaintingResource pr = new PaintingResource.Builder().color(color).width(width).transparency(trans.value).build();
+        PaintingResource pr = new PaintingResource.Builder().color(color).width(spSize).transparency(trans.value).build();
         if (cachedPaints.containsKey(pr)) {
             paint = cachedPaints.get(pr);
         } else {
             paint = new Paint();
-            paint.setTextSize(width * Globals.getInstance().getPixelDensity());
+            paint.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spSize, res.getDisplayMetrics()));
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(color);
             paint.setAlpha(trans.value);
