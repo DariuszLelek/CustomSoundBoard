@@ -175,9 +175,11 @@ public class SoundDataStorageControl {
             File folder = new File(Environment.getExternalStorageDirectory(), folderName);
             if (folder.exists()) {
                 File[] files = folder.listFiles();
-                for (File file : files) {
-                    if (file.isFile() && isAudioFile(file) && !userFiles.containsKey(file.getName())) {
-                        userFiles.put(getFileName(file), file.getAbsolutePath());
+                if(files != null){
+                    for (File file : files) {
+                        if (file.isFile() && isAudioFile(file) && !userFiles.containsKey(file.getName())) {
+                            userFiles.put(getFileName(file), file.getAbsolutePath());
+                        }
                     }
                 }
             }
