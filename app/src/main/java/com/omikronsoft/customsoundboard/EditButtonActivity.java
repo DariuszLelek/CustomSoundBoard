@@ -23,19 +23,17 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import com.omikronsoft.customsoundboard.panels.SoundButtonData;
 import com.omikronsoft.customsoundboard.panels.SoundsPanelControl;
-import com.omikronsoft.customsoundboard.utils.ApplicationContext;
 import com.omikronsoft.customsoundboard.utils.AudioPlayer;
 import com.omikronsoft.customsoundboard.utils.Globals;
 import com.omikronsoft.customsoundboard.utils.SoundData;
 import com.omikronsoft.customsoundboard.utils.SoundDataStorageControl;
 import com.omikronsoft.customsoundboard.utils.StorageLocation;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.offset;
-import static java.lang.Integer.parseInt;
 
 public class EditButtonActivity extends Activity {
     private List<String> itemsToDisplay;
@@ -49,7 +47,7 @@ public class EditButtonActivity extends Activity {
     private Dialog editSoundDialog;
     private TextView editSoundVolume, editSoundStartOff, editSoundEndOff;
     private SeekBar volumeBar, startBar, endBar;
-    private int soundEditDuration, soundEditMinDurationPercent;
+    private int soundEditDuration;
     private boolean lockEndBar, lockStartBar;
 
     @Override
@@ -72,9 +70,6 @@ public class EditButtonActivity extends Activity {
         InputFilter[] filterArray = new InputFilter[1];
         filterArray[0] = new InputFilter.LengthFilter(10);
         editTextName.setFilters(filterArray);
-
-        InputFilter[] filterArray2 = new InputFilter[1];
-        filterArray2[0] = new InputFilter.LengthFilter(4);
 
         TextView t = (TextView) findViewById(R.id.button_label);
         listView = (ListView) findViewById(R.id.list);
@@ -100,7 +95,7 @@ public class EditButtonActivity extends Activity {
         Globals.getInstance().setDataLoading(false);
     }
 
-    private void prepareEditSoundDialog(){
+    private void prepareEditSoundDialog() {
         editSoundDialog = new Dialog(this);
         editSoundDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         editSoundDialog.setContentView(R.layout.edit_sound_layout);
@@ -123,7 +118,8 @@ public class EditButtonActivity extends Activity {
         endBar.setRotation(180);
         volumeBar.setMax(100);
 
-        if(media.equals(sbd.getSoundData().getMedia())){
+        int soundEditMinDurationPercent;
+        if (media.equals(sbd.getSoundData().getMedia())) {
             soundEditDuration = sbd.getSoundData().getClipDuration();
             soundEditMinDurationPercent = 10;
 
@@ -132,11 +128,12 @@ public class EditButtonActivity extends Activity {
             volumeBar.setProgress(sbd.getSoundData().getVolume());
             startBar.setProgress(sbd.getSoundData().getStartOffset());
             endBar.setProgress(sbd.getSoundData().getEndOffset());
-            editSoundVolume.setText(String.valueOf(volumeBar.getProgress())+"%");
+            String volumeString = String.valueOf(volumeBar.getProgress()) + "%";
+            editSoundVolume.setText(volumeString);
             editSoundStartOff.setText(String.valueOf(startBar.getProgress()));
             editSoundEndOff.setText(String.valueOf(endBar.getProgress()));
             switchLooping.setChecked(sbd.getSoundData().isLooping());
-        }else{
+        } else {
             soundEditDuration = media.getDuration();
             soundEditMinDurationPercent = 10;
 
@@ -145,7 +142,8 @@ public class EditButtonActivity extends Activity {
             volumeBar.setProgress(100);
             startBar.setProgress(0);
             endBar.setProgress(0);
-            editSoundVolume.setText(String.valueOf(volumeBar.getProgress())+"%");
+            String volumeString = String.valueOf(volumeBar.getProgress()) + "%";
+            editSoundVolume.setText(volumeString);
             editSoundStartOff.setText(String.valueOf(startBar.getProgress()));
             editSoundEndOff.setText(String.valueOf(endBar.getProgress()));
             switchLooping.setChecked(false);
@@ -159,7 +157,8 @@ public class EditButtonActivity extends Activity {
         volumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                editSoundVolume.setText(Integer.toString(progress)+"%");
+                String volumeString = progress + "%";
+                editSoundVolume.setText(volumeString);
             }
 
             @Override
@@ -176,7 +175,7 @@ public class EditButtonActivity extends Activity {
         startBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                editSoundStartOff.setText(Integer.toString(progress));
+                editSoundStartOff.setText(progress);
 
                 if (!lockStartBar) {
                     if (progress + minSoundDuration + endBar.getProgress() > soundEditDuration) {
@@ -203,7 +202,7 @@ public class EditButtonActivity extends Activity {
         endBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                editSoundEndOff.setText(Integer.toString(progress));
+                editSoundEndOff.setText(progress);
 
                 if (!lockEndBar) {
                     if (progress + minSoundDuration + startBar.getProgress() > soundEditDuration) {
@@ -230,9 +229,9 @@ public class EditButtonActivity extends Activity {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(media.isPlaying()){
+                if (media.isPlaying()) {
                     AudioPlayer.getInstance().stopMedia(media);
-                }else{
+                } else {
                     float volume = volumeBar.getProgress() / 100f;
                     media.setVolume(volume, volume);
                     AudioPlayer.getInstance().playWithOffset(media, startBar.getProgress(), endBar.getProgress());
@@ -261,16 +260,16 @@ public class EditButtonActivity extends Activity {
         });
     }
 
-    private void hideDialog(){
+    private void hideDialog() {
         editSoundDialog.hide();
         AudioPlayer.getInstance().stopMedia(media);
     }
 
-    private void prepareEditButton(){
-        if(media != null || (sbd.getSoundData() != null && sbd.getSoundData().getMedia() != null)){
+    private void prepareEditButton() {
+        if (media != null || (sbd.getSoundData() != null && sbd.getSoundData().getMedia() != null)) {
             media = media == null ? sbd.getSoundData().getMedia() : media;
             (findViewById(R.id.btn_edit)).setEnabled(true);
-        }else{
+        } else {
             (findViewById(R.id.btn_edit)).setEnabled(false);
         }
 
@@ -337,8 +336,6 @@ public class EditButtonActivity extends Activity {
                     sd.setFileName(selectedListItem);
                     sd.setStorageLoc(storLoc);
                     sd.setMedia(media);
-
-                    int vol = sd.getVolume();
 
                     SoundsPanelControl.getInstance().updateButtonData(sbd);
                     finishActivity();

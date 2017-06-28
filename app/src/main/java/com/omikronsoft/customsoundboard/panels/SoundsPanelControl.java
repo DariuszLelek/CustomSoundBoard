@@ -36,7 +36,6 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
     private Bitmap soundsBoard;
     private List<Indicator> indicators;
     private final Paint backPaintNormal, backPaintEdit, centerPaint;
-    private Paint textPaint, lightPaint;
     private String loopLightIndicator;
 
     private SoundsPanelControl() {
@@ -94,9 +93,9 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
 
         //Globals.getInstance().getResources().getInteger(R.integer.button_text_sp)
 
-        textPaint = PaintingResources.getInstance().getTextPaintCenter(textSize, Color.WHITE, Transparency.OPAQUE);
-        lightPaint = PaintingResources.getInstance().getTextPaintCenter(Globals.getInstance().getLightSize(),
-                ContextCompat.getColor(ApplicationContext.get(), R.color.button_back_light) , Transparency.HALF);
+        Paint textPaint = PaintingResources.getInstance().getTextPaintCenter(textSize, Color.WHITE, Transparency.OPAQUE);
+        Paint lightPaint = PaintingResources.getInstance().getTextPaintCenter(Globals.getInstance().getLightSize(),
+                ContextCompat.getColor(ApplicationContext.get(), R.color.button_back_light), Transparency.HALF);
 
         PointF buttonCenter, lightLoc;
 

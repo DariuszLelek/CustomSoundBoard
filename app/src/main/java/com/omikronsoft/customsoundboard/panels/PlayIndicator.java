@@ -1,6 +1,5 @@
 package com.omikronsoft.customsoundboard.panels;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PointF;

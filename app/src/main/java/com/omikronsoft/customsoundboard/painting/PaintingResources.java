@@ -3,7 +3,6 @@ package com.omikronsoft.customsoundboard.painting;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.TypedValue;

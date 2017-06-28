@@ -8,11 +8,11 @@ import android.graphics.PointF;
  * dariusz.lelek@gmail.com
  */
 
-public abstract class Indicator {
-    protected int column, row, radius, playDuration;
-    protected PointF center;
+abstract class Indicator {
+    int column, row, radius, playDuration;
+    PointF center;
 
-    public Indicator(int column, int row, PointF center, int radius, int playDuration) {
+    Indicator(int column, int row, PointF center, int radius, int playDuration) {
         this.column = column;
         this.row = row;
         this.center = center;
@@ -25,11 +25,11 @@ public abstract class Indicator {
     public abstract void stop();
     public abstract void reset();
 
-    public int getPlayDuration(){
+    int getPlayDuration(){
         return playDuration;
     }
 
-    public void setPlayDuration(int playDuration) {
+    void setPlayDuration(int playDuration) {
         this.playDuration = playDuration;
     }
 

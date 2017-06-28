@@ -2,18 +2,9 @@ package com.omikronsoft.customsoundboard.utils;
 
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.os.Looper;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static android.R.attr.offset;
-import static android.R.attr.start;
 
 /**
  * Created by Dariusz Lelek on 5/27/2017.
@@ -82,7 +73,7 @@ public class AudioPlayer {
         }
     }
 
-    public void playWithOffset(MediaPlayer player, int startOffset){
+    private void playWithOffset(MediaPlayer player, int startOffset){
         if (!activeMedia.containsKey(player)) {
             activeMedia.put(player, threadNum);
         }

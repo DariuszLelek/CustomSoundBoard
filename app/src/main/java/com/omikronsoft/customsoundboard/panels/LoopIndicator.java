@@ -2,7 +2,6 @@ package com.omikronsoft.customsoundboard.panels;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.support.v4.content.ContextCompat;
@@ -11,18 +10,15 @@ import com.omikronsoft.customsoundboard.R;
 import com.omikronsoft.customsoundboard.painting.PaintingResources;
 import com.omikronsoft.customsoundboard.painting.Transparency;
 import com.omikronsoft.customsoundboard.utils.ApplicationContext;
-import com.omikronsoft.customsoundboard.utils.ArcUtils;
 import com.omikronsoft.customsoundboard.utils.Globals;
-
-import static android.R.attr.textSize;
 
 /**
  * Created by Dariusz Lelek on 6/28/2017.
  * dariusz.lelek@gmail.com
  */
 
-public class LoopIndicator extends Indicator{
-    private int radius2, bitmapX, bitmapY;
+class LoopIndicator extends Indicator{
+    private int bitmapX, bitmapY;
     private Bitmap loopBitmap;
     private boolean playing;
     private PointF lightLoc;
@@ -34,7 +30,6 @@ public class LoopIndicator extends Indicator{
 
         this.lightLoc = lightLoc;
         playing = true;
-        radius2 = radius / 2;
         loopBitmap = PaintingResources.getInstance().getLoopBitmap(2 * radius);
         lightPaint = PaintingResources.getInstance().getTextPaintCenter(Globals.getInstance().getLightSize(),
                 ContextCompat.getColor(ApplicationContext.get(), R.color.button_back_light_edit) , Transparency.OPAQUE);
