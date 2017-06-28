@@ -36,7 +36,8 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
     private Bitmap soundsBoard;
     private List<Indicator> indicators;
     private final Paint backPaintNormal, backPaintEdit, centerPaint;
-    private Paint textPaint, testInfoPaint;
+    private Paint textPaint, lightPaint;
+    private String loopLightIndicator;
 
     private SoundsPanelControl() {
         super();
@@ -49,6 +50,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         int offset = backGroundOffset;
         backGroundArea = new RectF(area.left + offset, area.top + offset / 2, area.right - offset, area.bottom - offset);
         indicators = new LinkedList<>();
+        loopLightIndicator =  Globals.getInstance().getResources().getString(R.string.loop_light_indicator);
 
         Context context = ApplicationContext.get();
         backPaintNormal = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_back_light), Transparency.HALF);
@@ -88,13 +90,15 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         // experimenting with size
         int textSize = buttonWidth / 8;
 
+        Globals.getInstance().setLightSize(2*textSize);
+
         //Globals.getInstance().getResources().getInteger(R.integer.button_text_sp)
 
         textPaint = PaintingResources.getInstance().getTextPaintCenter(textSize, Color.WHITE, Transparency.OPAQUE);
-        testInfoPaint = PaintingResources.getInstance().getTextPaintCenter(2*textSize,
+        lightPaint = PaintingResources.getInstance().getTextPaintCenter(Globals.getInstance().getLightSize(),
                 ContextCompat.getColor(ApplicationContext.get(), R.color.button_back_light) , Transparency.HALF);
 
-        PointF buttonCenter;
+        PointF buttonCenter, lightLoc;
 
         int top, left, right, bottom;
 
@@ -105,10 +109,11 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
                 right = left + buttonWidth;
                 bottom = top + buttonHeight;
                 buttonCenter = new PointF(backGroundArea.left + left + buttonWidth2, backGroundArea.top + top + buttonHeight / 2);
-
+                lightLoc = new PointF(backGroundArea.left + left + buttonWidth2, backGroundArea.top + top + buttonHeight / 1.2f);
                 SoundButtonData sbd = new SoundButtonData(i, j);
                 sbd.setArea(new RectF(left, backGroundArea.top + top, right, backGroundArea.top + bottom));
                 sbd.setCenter(buttonCenter);
+                sbd.setLightLocation(lightLoc);
                 if (soundData[i][j] != null) {
                     sbd.setSoundData(soundData[i][j]);
                 }
@@ -126,7 +131,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
 
                 if(sbd.getSoundData().isLooping()){
                     // button info
-                    canvas.drawText("_", left + buttonWidth2, top + buttonHeight / 1.2f, testInfoPaint);
+                    canvas.drawText(loopLightIndicator, left + buttonWidth2, top + buttonHeight / 1.2f, lightPaint);
                 }
             }
         }

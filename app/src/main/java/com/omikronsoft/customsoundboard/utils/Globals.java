@@ -21,6 +21,7 @@ public class Globals {
     private Resources resources;
     private boolean dataPrepared, editMode, dataLoading;
     private SoundButtonData editedButton;
+    private int lightSize;
 
     public final static int ADD_HEIGHT = 50;
     public final static boolean ADS_ENABLED = true;
@@ -68,6 +69,14 @@ public class Globals {
         AudioPlayer.getInstance();
 
         dataPrepared = true;
+    }
+
+    public int getLightSize() {
+        return lightSize;
+    }
+
+    public void setLightSize(int lightSize) {
+        this.lightSize = lightSize;
     }
 
     public boolean isEditMode() {

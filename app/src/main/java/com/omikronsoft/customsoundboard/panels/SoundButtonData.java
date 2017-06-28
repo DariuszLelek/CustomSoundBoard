@@ -14,7 +14,7 @@ import com.omikronsoft.customsoundboard.utils.AudioPlayer;
 public class SoundButtonData {
     private int row, column;
     private RectF area;
-    private PointF center;
+    private PointF center, lightLoc;
     private SoundData soundData;
 
     SoundButtonData(int column, int row) {
@@ -32,7 +32,7 @@ public class SoundButtonData {
                     SoundsPanelControl.getInstance().stopIndicator(column, row);
                     AudioPlayer.getInstance().stopLoop(soundData.getMedia());
                 }else{
-                    SoundsPanelControl.getInstance().addIndicator(new LoopIndicator(column, row, center, radius, soundData.getIndicatorDuration()));
+                    SoundsPanelControl.getInstance().addIndicator(new LoopIndicator(column, row, center, radius, soundData.getIndicatorDuration(), lightLoc));
                     AudioPlayer.getInstance().loopWithOffset(soundData.getMedia(), soundData.getStartOffset(), soundData.getEndOffset());
                 }
             }else{
@@ -44,6 +44,14 @@ public class SoundButtonData {
 
     void setCenter(PointF center) {
         this.center = center;
+    }
+
+    void setLightLocation(PointF lightLoc){
+        this.lightLoc = lightLoc;
+    }
+
+    public PointF getLightLoc() {
+        return lightLoc;
     }
 
     void setArea(RectF area) {

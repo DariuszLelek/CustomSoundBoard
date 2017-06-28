@@ -8,7 +8,8 @@ package com.omikronsoft.customsoundboard.painting;
 public enum Transparency {
     OPAQUE(255),
     HALF(120),
-    LOW(60),
+    LOW(40),
+
     V_LOW(10);
 
     int value;

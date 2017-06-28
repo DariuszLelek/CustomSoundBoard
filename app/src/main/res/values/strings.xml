@@ -15,6 +15,7 @@
     <string name="default_sound_directory">android.resource://com.omikronsoft.customsoundboard/raw/</string>
 
     <string name="edit_sound_data_button">Edit Sound Data</string>
+    <string name="loop_light_indicator">_</string>
 
     <string name="title_activity_options">OptionsActivity</string>
 </resources>
