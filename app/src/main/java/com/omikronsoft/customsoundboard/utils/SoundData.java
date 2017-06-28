@@ -14,40 +14,35 @@ public class SoundData {
     private StorageLocation storageLoc;
     private MediaPlayer media;
     private int duration;
-    private int offset;
+    private int startOffset, endOffset;
+    private int volume;
     private boolean looping;
 
-    public SoundData(int column, int row, String name, MediaPlayer media, int offset, String fileName, boolean looping) {
+    public SoundData(int column, int row, String name, MediaPlayer media, int startOffset, int endOffset, String fileName, boolean looping, int volume) {
         this.column = column;
         this.row = row;
         this.name = name;
-        this.offset = offset;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
         this.fileName = fileName;
         this.media = media;
         this.looping = looping;
-        updateDuration();
+        setVolume(volume);
+
+        updateIndicatorDuration();
     }
 
-    private void updateDuration(){
+    private void updateIndicatorDuration(){
         if (media != null) {
-            duration = media.getDuration() - offset;
+            duration = media.getDuration() - (startOffset + endOffset);
         }
     }
 
     public void setMedia(MediaPlayer media) {
         this.media = media;
-        updateDuration();
+        updateIndicatorDuration();
+        updateVolume();
     }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-        updateDuration();
-    }
-
     public String getName() {
         return name;
     }
@@ -84,8 +79,12 @@ public class SoundData {
         return media;
     }
 
-    public int getDuration() {
+    public int getIndicatorDuration() {
         return duration;
+    }
+
+    public int getClipDuration(){
+        return media != null ? media.getDuration() : 0;
     }
 
     int getRow() {
@@ -96,5 +95,37 @@ public class SoundData {
         return column;
     }
 
+    public int getVolume() {
+        return volume;
+    }
 
+    public void setVolume(int volume) {
+        this.volume = volume;
+        updateVolume();
+    }
+
+    private void updateVolume(){
+        if(media != null){
+            float vol = volume / 100f;
+            media.setVolume(vol, vol);
+        }
+    }
+
+    public int getStartOffset() {
+        return startOffset;
+    }
+
+    public void setStartOffset(int startOffset) {
+        this.startOffset = startOffset;
+        updateIndicatorDuration();
+    }
+
+    public int getEndOffset() {
+        return endOffset;
+    }
+
+    public void setEndOffset(int endOffset) {
+        this.endOffset = endOffset;
+        updateIndicatorDuration();
+    }
 }

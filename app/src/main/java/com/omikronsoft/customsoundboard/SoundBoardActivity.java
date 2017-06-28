@@ -15,6 +15,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.omikronsoft.customsoundboard.utils.ApplicationContext;
+import com.omikronsoft.customsoundboard.utils.AudioPlayer;
 import com.omikronsoft.customsoundboard.utils.Globals;
 
 public class SoundBoardActivity extends AppCompatActivity {
@@ -76,6 +77,8 @@ public class SoundBoardActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        AudioPlayer.getInstance().stopAll();
+
         if (adView != null) {
             adView.destroy();
         }

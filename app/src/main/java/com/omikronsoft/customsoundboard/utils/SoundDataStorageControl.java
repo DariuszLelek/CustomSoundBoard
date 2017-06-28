@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static android.R.attr.delay;
 import static com.omikronsoft.customsoundboard.utils.StorageLocation.REC_FOLDER;
 import static java.lang.Integer.parseInt;
 
@@ -39,6 +40,8 @@ public class SoundDataStorageControl {
 
     public static final String SOUND_SAVE_PREFIX = "Sound"; // + "col,row" -> "1,2"
     public static final String SAVE_FORMAT_SPLITTER = ",";
+    public static final String SAVE_FORMAT_JOINER = "-";
+
     private Context context;
 
     private SoundDataStorageControl() {
@@ -206,8 +209,9 @@ public class SoundDataStorageControl {
         result.append(sd.getName()).append(SAVE_FORMAT_SPLITTER);
         result.append(sd.getStorageLoc().value).append(SAVE_FORMAT_SPLITTER);
         result.append(sd.getFileName()).append(SAVE_FORMAT_SPLITTER);
-        result.append(sd.getOffset()).append(SAVE_FORMAT_SPLITTER);
-        result.append(sd.isLooping() ? "Y" : "N");
+        result.append(sd.getStartOffset()).append(SAVE_FORMAT_JOINER).append(sd.getEndOffset()).append(SAVE_FORMAT_SPLITTER);
+        result.append(sd.isLooping() ? "Y" : "N").append(SAVE_FORMAT_SPLITTER);
+        result.append(sd.getVolume());
         return result.toString();
     }
 
@@ -221,8 +225,8 @@ public class SoundDataStorageControl {
         }
 
         try {
+            // location
             Integer.parseInt(parts[1]);
-            Integer.parseInt(parts[3]);
         } catch (NumberFormatException e) {
             // todo add log
             e.printStackTrace();
@@ -254,18 +258,25 @@ public class SoundDataStorageControl {
 
         if (!savedData.isEmpty()) {
             String[] parts = savedData.split(SAVE_FORMAT_SPLITTER);
+
             if (dataIsValid(parts)) {
                 String name = parts[0];
                 StorageLocation storageLoc = StorageLocation.fromInteger(parseInt(parts[1]));
                 String fileName = parts[2];
-                int delay = parseInt(parts[3]);
+
+                String[] offsets = parts[3].split(SAVE_FORMAT_JOINER);
+                int startOffset = offsets.length > 0 ? parseInt(offsets[0]) : 0;
+                int endOffset = offsets.length > 1 ? parseInt(offsets[1]) : 0;
+
                 boolean looping = parts.length > 4 ? parts[4].equals("Y") : false;
+                int volume = parts.length > 5 ? parseInt(parts[5]) : 100;
 
                 MediaPlayer media = getMedia(storageLoc, fileName);
 
+                // todo refactor this
                 // check if sound is available in storage
                 if (media != null) {
-                    result = new SoundData(column, row, name, media, delay, fileName, looping);
+                    result = new SoundData(column, row, name, media, startOffset, endOffset, fileName, looping, volume);
                 } else {
                     deleteSavedData(prefSoundKey);
                 }

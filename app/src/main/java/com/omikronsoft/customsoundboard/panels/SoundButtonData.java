@@ -6,8 +6,6 @@ import android.graphics.RectF;
 import com.omikronsoft.customsoundboard.utils.SoundData;
 import com.omikronsoft.customsoundboard.utils.AudioPlayer;
 
-import static android.R.attr.radius;
-
 /**
  * Created by Dariusz Lelek on 5/26/2017.
  * dariusz.lelek@gmail.com
@@ -18,12 +16,11 @@ public class SoundButtonData {
     private RectF area;
     private PointF center;
     private SoundData soundData;
-    private PlayIndicator playIndicator;
 
     SoundButtonData(int column, int row) {
         this.row = row;
         this.column = column;
-        soundData = new SoundData(column, row, "", null, 0, "", false);
+        soundData = new SoundData(column, row, "", null, 0, 0, "", false, 100);
     }
 
     void processClick() {
@@ -31,16 +28,16 @@ public class SoundButtonData {
             int radius = (int) area.width() / 3 > (int) area.height() / 3 ? (int) area.height() / 3 : (int) area.width() / 3;
 
             if(soundData.isLooping()){
-                if(soundData.getMedia().isPlaying()){
+                if(AudioPlayer.getInstance().isLooping(soundData.getMedia())){
                     SoundsPanelControl.getInstance().stopIndicator(column, row);
-                    AudioPlayer.getInstance().stopMedia(soundData.getMedia());
+                    AudioPlayer.getInstance().stopLoop(soundData.getMedia());
                 }else{
-                    SoundsPanelControl.getInstance().addIndicator(new LoopIndicator(column, row, center, radius, soundData.getDuration()));
-                    AudioPlayer.getInstance().playWithOffset(soundData.getMedia(), soundData.getOffset(), true);
+                    SoundsPanelControl.getInstance().addIndicator(new LoopIndicator(column, row, center, radius, soundData.getIndicatorDuration()));
+                    AudioPlayer.getInstance().loopWithOffset(soundData.getMedia(), soundData.getStartOffset(), soundData.getEndOffset());
                 }
             }else{
-                SoundsPanelControl.getInstance().addIndicator(new PlayIndicator(column, row, center, radius, soundData.getDuration()));
-                AudioPlayer.getInstance().playWithOffset(soundData.getMedia(), soundData.getOffset(), soundData.isLooping());
+                SoundsPanelControl.getInstance().addIndicator(new PlayIndicator(column, row, center, radius, soundData.getIndicatorDuration()));
+                AudioPlayer.getInstance().playWithOffset(soundData.getMedia(), soundData.getStartOffset(),soundData.getEndOffset());
             }
         }
     }
