@@ -6,6 +6,8 @@ import android.graphics.RectF;
 import com.omikronsoft.customsoundboard.utils.SoundData;
 import com.omikronsoft.customsoundboard.utils.AudioPlayer;
 
+import static android.R.attr.radius;
+
 /**
  * Created by Dariusz Lelek on 5/26/2017.
  * dariusz.lelek@gmail.com
@@ -16,17 +18,30 @@ public class SoundButtonData {
     private RectF area;
     private PointF center;
     private SoundData soundData;
+    private PlayIndicator playIndicator;
 
     SoundButtonData(int column, int row) {
         this.row = row;
         this.column = column;
-        soundData = new SoundData(column, row, "-", null, 0, "");
+        soundData = new SoundData(column, row, "", null, 0, "", false);
     }
 
     void processClick() {
         if (soundData != null && soundData.getMedia() != null) {
-            SoundsPanelControl.getInstance().addPlayIndicator(new PlayIndicator(column, row, soundData.getDuration(), center, (int) area.width() / 3));
-            AudioPlayer.getInstance().playWithOffset(soundData.getMedia(), soundData.getOffset());
+            int radius = (int) area.width() / 3 > (int) area.height() / 3 ? (int) area.height() / 3 : (int) area.width() / 3;
+
+            if(soundData.isLooping()){
+                if(soundData.getMedia().isPlaying()){
+                    SoundsPanelControl.getInstance().stopIndicator(column, row);
+                    AudioPlayer.getInstance().stopMedia(soundData.getMedia());
+                }else{
+                    SoundsPanelControl.getInstance().addIndicator(new LoopIndicator(column, row, center, radius, soundData.getDuration()));
+                    AudioPlayer.getInstance().playWithOffset(soundData.getMedia(), soundData.getOffset(), true);
+                }
+            }else{
+                SoundsPanelControl.getInstance().addIndicator(new PlayIndicator(column, row, center, radius, soundData.getDuration()));
+                AudioPlayer.getInstance().playWithOffset(soundData.getMedia(), soundData.getOffset(), soundData.isLooping());
+            }
         }
     }
 

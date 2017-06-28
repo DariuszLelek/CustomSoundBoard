@@ -1,9 +1,14 @@
 package com.omikronsoft.customsoundboard.painting;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.TypedValue;
 
+import com.omikronsoft.customsoundboard.R;
 import com.omikronsoft.customsoundboard.utils.Globals;
 
 import java.util.HashMap;
@@ -19,12 +24,17 @@ public class PaintingResources {
     private Map<PaintingResource, Paint> cachedPaints;
     private Map<Transparency, Paint> bitmapPaints;
     private Resources res;
+    private Bitmap loopBitmap;
+    private int loopBitmapSize;
 
     private PaintingResources() {
         cachedPaints = new HashMap<>();
         bitmapPaints = new HashMap<>();
 
         res = Globals.getInstance().getResources();
+
+        loopBitmap = BitmapFactory.decodeResource(res, R.drawable.arrows);
+        loopBitmapSize = loopBitmap.getWidth();
     }
 
     public Paint getBitmapPaint(Transparency transparency) {
@@ -95,6 +105,28 @@ public class PaintingResources {
             cachedPaints.put(pr, paint);
         }
         return paint;
+    }
+
+    public Bitmap getLoopBitmap(int newSize) {
+        if(newSize != loopBitmapSize){
+            loopBitmapSize = newSize;
+
+            int width = loopBitmap.getWidth();
+            int height = loopBitmap.getHeight();
+            float scaleWidth = ((float) newSize) / width;
+            float scaleHeight = ((float) newSize) / height;
+            // CREATE A MATRIX FOR THE MANIPULATION
+            Matrix matrix = new Matrix();
+            // RESIZE THE BIT MAP
+            matrix.postScale(scaleWidth, scaleHeight);
+
+            // "RECREATE" THE NEW BITMAP
+            Bitmap resizedBitmap = Bitmap.createBitmap(loopBitmap, 0, 0, width, height, matrix, false);
+            loopBitmap.recycle();
+            loopBitmap = resizedBitmap;
+        }
+
+        return loopBitmap;
     }
 
     public synchronized static PaintingResources getInstance() {

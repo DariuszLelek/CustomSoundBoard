@@ -21,89 +21,118 @@
         android:weightSum="1">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp">
 
             <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/button_label"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textColor="@android:color/white"
-                android:paddingBottom="12dp" />
-
-            <TextView
-                android:text="Sound Name (max 10 char)"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+
+            <TextView
                 android:id="@+id/sound_name_label"
-                tools:text="Sound Name (max 10 char)"
-                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:maxLength="10"
-                android:textColor="@android:color/white"
-                android:textAlignment="center" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:paddingBottom="12dp"
-                android:paddingEnd="6dp"
-                android:paddingLeft="6dp"
-                android:paddingRight="6dp"
-                android:layout_height="44dp">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textPersonName"
-                    android:text="Name"
-                    android:ems="10"
-                    android:id="@+id/sound_name_edit"
-                    android:textAlignment="center"
-                    android:background="@android:color/white"
-                    android:layout_weight="0.14"
-                    android:textColor="@android:color/black"
-                    android:imeOptions="actionDone" />
-            </FrameLayout>
-
-            <TextView
-                android:text="Offset (in milliseconds)"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/delay_label"
-                android:textColor="@android:color/white"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:text="Sound Name (max 10 char)"
                 android:textAlignment="center"
-                tools:text="Offset (in milliseconds)" />
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                tools:text="Sound Name (max 10 char)" />
 
-            <FrameLayout
+            <EditText
+                android:id="@+id/sound_name_edit"
                 android:layout_width="match_parent"
-                android:paddingBottom="12dp"
-                android:paddingEnd="6dp"
-                android:paddingLeft="6dp"
-                android:paddingRight="6dp"
-                android:layout_height="44dp">
+                android:layout_height="match_parent"
+                android:layout_weight="0.14"
+                android:background="@android:color/white"
+                android:ems="10"
+                android:imeOptions="actionDone"
+                android:inputType="textPersonName"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:text="Name"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="0"
-                    android:ems="10"
-                    android:id="@+id/delay_edit"
-                    android:textAlignment="center"
-                    android:background="@android:color/white"
-                    android:textColor="@android:color/black"
-                    android:inputType="number"
-                    android:imeOptions="actionDone" />
-
-            </FrameLayout>
-
-            <TextView
-                android:text="Available Sounds (Hold to listen)"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/delay_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Offset (in milliseconds)"
+                            android:textAlignment="center"
+                            android:textColor="@android:color/white"
+                            tools:text="Offset (in milliseconds)" />
+
+                        <EditText
+                            android:id="@+id/delay_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/white"
+                            android:ems="10"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textColor="@android:color/black" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:layout_weight="0">
+
+                    <CheckBox
+                        android:id="@+id/check_loop"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center"
+                        android:text="Loop"
+                        android:textAlignment="center" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TextView
                 android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:text="Available Sounds (Hold to listen)"
                 android:textAlignment="center"
                 android:textColor="@android:color/white" />
         </LinearLayout>
@@ -141,13 +170,13 @@
                         android:gravity="center" />
 
                     <CheckBox
-                        android:text="Default"
+                        android:id="@+id/checkBox"
+                        style="@android:style/Widget.CompoundButton.CheckBox"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/checkBox"
                         android:layout_weight="1"
-                        android:textSize="12sp"
-                        style="@android:style/Widget.CompoundButton.CheckBox" />
+                        android:text="Default"
+                        android:textSize="12sp" />
 
                     <CheckBox
                         android:text="User"

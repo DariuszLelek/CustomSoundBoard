@@ -33,7 +33,7 @@ import static java.lang.Integer.parseInt;
 public class EditButtonActivity extends Activity {
     private List<String> itemsToDisplay;
     private CheckBox defaultCheck;
-    private CheckBox userCheck;
+    private CheckBox userCheck, editLoop;
     private ListView listView;
     private SoundButtonData sbd;
     private EditText editTextName, editOffset;
@@ -57,8 +57,10 @@ public class EditButtonActivity extends Activity {
         sbd = Globals.getInstance().getEditedButton();
         editTextName = (EditText) findViewById(R.id.sound_name_edit);
         editOffset = (EditText) findViewById(R.id.delay_edit);
+        editLoop = (CheckBox) findViewById(R.id.check_loop);
 
         editOffset.setText(String.valueOf(sbd.getSoundData().getOffset()));
+        editLoop.setChecked(sbd.getSoundData().isLooping());
 
         InputFilter[] filterArray = new InputFilter[1];
         filterArray[0] = new InputFilter.LengthFilter(10);
@@ -145,6 +147,7 @@ public class EditButtonActivity extends Activity {
                     sd.setFileName(selectedListItem);
                     sd.setStorageLoc(storLoc);
                     sd.setMedia(media);
+                    sd.setLooping(editLoop.isChecked());
                     SoundsPanelControl.getInstance().updateButtonData(sbd);
                     finishActivity();
                 }

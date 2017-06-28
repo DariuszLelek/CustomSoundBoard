@@ -206,7 +206,8 @@ public class SoundDataStorageControl {
         result.append(sd.getName()).append(SAVE_FORMAT_SPLITTER);
         result.append(sd.getStorageLoc().value).append(SAVE_FORMAT_SPLITTER);
         result.append(sd.getFileName()).append(SAVE_FORMAT_SPLITTER);
-        result.append(sd.getOffset());
+        result.append(sd.getOffset()).append(SAVE_FORMAT_SPLITTER);
+        result.append(sd.isLooping() ? "Y" : "N");
         return result.toString();
     }
 
@@ -258,12 +259,13 @@ public class SoundDataStorageControl {
                 StorageLocation storageLoc = StorageLocation.fromInteger(parseInt(parts[1]));
                 String fileName = parts[2];
                 int delay = parseInt(parts[3]);
+                boolean looping = parts.length > 4 ? parts[4].equals("Y") : false;
 
                 MediaPlayer media = getMedia(storageLoc, fileName);
 
                 // check if sound is available in storage
                 if (media != null) {
-                    result = new SoundData(column, row, name, media, delay, fileName);
+                    result = new SoundData(column, row, name, media, delay, fileName, looping);
                 } else {
                     deleteSavedData(prefSoundKey);
                 }

@@ -34,8 +34,9 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
     private SoundButtonData[][] soundButtonData;
     private SoundData[][] soundData;
     private Bitmap soundsBoard;
-    private List<PlayIndicator> playIndicators;
-    private final Paint backPaintNormal, backPaintEdit, centerPaint, textPaint;
+    private List<Indicator> indicators;
+    private final Paint backPaintNormal, backPaintEdit, centerPaint;
+    private Paint textPaint, testInfoPaint;
 
     private SoundsPanelControl() {
         super();
@@ -47,13 +48,12 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         rowHeight = (int) area.height() / rows;
         int offset = backGroundOffset;
         backGroundArea = new RectF(area.left + offset, area.top + offset / 2, area.right - offset, area.bottom - offset);
-        playIndicators = new LinkedList<>();
+        indicators = new LinkedList<>();
 
         Context context = ApplicationContext.get();
         backPaintNormal = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_back_light), Transparency.HALF);
         backPaintEdit = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_back_light_edit), Transparency.HALF);
         centerPaint = PaintingResources.getInstance().getFillPaint(ContextCompat.getColor(context, R.color.button_color), Transparency.OPAQUE);
-        textPaint = PaintingResources.getInstance().getTextPaintCenter(Globals.getInstance().getResources().getInteger(R.integer.button_text_sp), Color.WHITE, Transparency.OPAQUE);
 
         readSoundData();
         prepareSoundsBoard();
@@ -78,11 +78,20 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         soundsBoard.eraseColor(Color.TRANSPARENT);
         Canvas canvas = new Canvas(soundsBoard);
 
-        int buttonWidth, buttonHeight;
+        int buttonWidth, buttonHeight, buttonWidth2;
         int offset = Globals.getInstance().getPixelSize(Globals.getInstance().getResources().getInteger(R.integer.sound_buttons_offset));
         int outline = Globals.getInstance().getPixelSize(Globals.getInstance().getResources().getInteger(R.integer.button_outline_width));
         buttonWidth = (soundsBoard.getWidth() / columns) - 2 * offset;
         buttonHeight = (soundsBoard.getHeight() / rows) - 2 * offset;
+        buttonWidth2 = buttonWidth / 2;
+
+        // experimenting with size
+        int textSize = buttonWidth / 8;
+
+        //Globals.getInstance().getResources().getInteger(R.integer.button_text_sp)
+
+        textPaint = PaintingResources.getInstance().getTextPaintCenter(textSize, Color.WHITE, Transparency.OPAQUE);
+        testInfoPaint = PaintingResources.getInstance().getTextPaintCenter(textSize/2, Color.WHITE, Transparency.OPAQUE);
 
         PointF buttonCenter;
 
@@ -94,7 +103,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
                 top = (j * (buttonHeight + 2 * offset)) + offset;
                 right = left + buttonWidth;
                 bottom = top + buttonHeight;
-                buttonCenter = new PointF(backGroundArea.left + left + buttonWidth / 2, backGroundArea.top + top + buttonHeight / 2);
+                buttonCenter = new PointF(backGroundArea.left + left + buttonWidth2, backGroundArea.top + top + buttonHeight / 2);
 
                 SoundButtonData sbd = new SoundButtonData(i, j);
                 sbd.setArea(new RectF(left, backGroundArea.top + top, right, backGroundArea.top + bottom));
@@ -112,7 +121,12 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
                 canvas.drawRect(left + outline, top + outline, right - outline, bottom - outline, centerPaint);
 
                 // button label
-                canvas.drawText(sbd.getSoundData().getName(), left + buttonWidth / 2, top + buttonHeight / 2, textPaint);
+                canvas.drawText(sbd.getSoundData().getName(), left + buttonWidth2, top + buttonHeight / 2, textPaint);
+
+                if(sbd.getSoundData().isLooping()){
+                    // button info
+                    canvas.drawText("LOOP", left + buttonWidth2, top + buttonHeight / 1.2f, testInfoPaint);
+                }
             }
         }
         Globals.getInstance().setDataLoading(false);
@@ -150,7 +164,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
                     PaintingResources.getInstance().getTextPaintCenter(35, Color.WHITE, Transparency.HALF));
         } else {
             canvas.drawBitmap(soundsBoard, backGroundArea.left, backGroundArea.top, PaintingResources.getInstance().getBitmapPaint(Transparency.OPAQUE));
-            drawPlayIndicators(canvas);
+            drawIndicators(canvas);
         }
     }
 
@@ -159,25 +173,38 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         return area;
     }
 
-    synchronized void addPlayIndicator(PlayIndicator pi) {
-        if (playIndicators.contains(pi)) {
-            playIndicators.get(playIndicators.indexOf(pi)).reset();
+    synchronized void addIndicator(Indicator i) {
+        if (indicators.contains(i)) {
+            Indicator cachedIndicator = indicators.get(indicators.indexOf(i));
+            if(cachedIndicator.getPlayDuration() != i.getPlayDuration()){
+                cachedIndicator.setPlayDuration(i.getPlayDuration());
+            }
+            cachedIndicator.reset();
         } else {
-            playIndicators.add(pi);
+            indicators.add(i);
         }
     }
 
-    private synchronized void drawPlayIndicators(Canvas canvas) {
-        for (PlayIndicator pi : playIndicators) {
-            if (pi.isPlaying()) {
-                pi.draw(canvas);
+    private synchronized void drawIndicators(Canvas canvas) {
+        for (Indicator i : indicators) {
+            if (i.isPlaying()) {
+                i.draw(canvas);
             }
         }
     }
 
-    void stopPlayIndicators() {
-        for (PlayIndicator pi : playIndicators) {
-            pi.stop();
+    void stopIndicator(int col, int row){
+        for (Indicator i : indicators) {
+            if (i.isPlaying() && i.column == col && i.row == row) {
+                i.stop();
+                break;
+            }
+        }
+    }
+
+    void stopIndicators() {
+        for (Indicator i : indicators) {
+            i.stop();
         }
     }
 

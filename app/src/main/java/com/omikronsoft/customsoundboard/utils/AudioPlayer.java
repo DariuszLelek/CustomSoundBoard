@@ -32,7 +32,7 @@ public class AudioPlayer {
         }
     }
 
-    public void playWithOffset(MediaPlayer player, int offset) {
+    public void playWithOffset(MediaPlayer player, int offset, boolean isLooping) {
         if (!activeMedia.contains(player)) {
             activeMedia.add(player);
         }
@@ -43,6 +43,10 @@ public class AudioPlayer {
 
         player.seekTo(offset);
         player.start();
+
+        if(isLooping){
+            player.setLooping(true);
+        }
     }
 
     public void stopAll() {

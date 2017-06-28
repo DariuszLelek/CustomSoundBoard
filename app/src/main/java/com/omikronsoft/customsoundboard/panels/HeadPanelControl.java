@@ -126,7 +126,7 @@ public class HeadPanelControl extends Panel implements IPanelControl {
 
     private void stopAll() {
         AudioPlayer.getInstance().stopAll();
-        SoundsPanelControl.getInstance().stopPlayIndicators();
+        SoundsPanelControl.getInstance().stopIndicators();
     }
 
     public synchronized static HeadPanelControl getInstance() {

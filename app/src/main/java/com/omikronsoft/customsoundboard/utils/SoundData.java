@@ -15,14 +15,16 @@ public class SoundData {
     private MediaPlayer media;
     private int duration;
     private int offset;
+    private boolean looping;
 
-    public SoundData(int column, int row, String name, MediaPlayer media, int offset, String fileName) {
+    public SoundData(int column, int row, String name, MediaPlayer media, int offset, String fileName, boolean looping) {
         this.column = column;
         this.row = row;
         this.name = name;
         this.offset = offset;
         this.fileName = fileName;
         this.media = media;
+        this.looping = looping;
         updateDuration();
     }
 
@@ -48,6 +50,14 @@ public class SoundData {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isLooping() {
+        return looping;
+    }
+
+    public void setLooping(boolean looping) {
+        this.looping = looping;
     }
 
     public void setName(String name) {
@@ -85,4 +95,6 @@ public class SoundData {
     int getColumn() {
         return column;
     }
+
+
 }
