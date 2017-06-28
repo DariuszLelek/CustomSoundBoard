@@ -91,7 +91,8 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
         //Globals.getInstance().getResources().getInteger(R.integer.button_text_sp)
 
         textPaint = PaintingResources.getInstance().getTextPaintCenter(textSize, Color.WHITE, Transparency.OPAQUE);
-        testInfoPaint = PaintingResources.getInstance().getTextPaintCenter(textSize/2, Color.WHITE, Transparency.OPAQUE);
+        testInfoPaint = PaintingResources.getInstance().getTextPaintCenter(2*textSize,
+                ContextCompat.getColor(ApplicationContext.get(), R.color.button_back_light) , Transparency.HALF);
 
         PointF buttonCenter;
 
@@ -125,7 +126,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
 
                 if(sbd.getSoundData().isLooping()){
                     // button info
-                    canvas.drawText("LOOP", left + buttonWidth2, top + buttonHeight / 1.2f, testInfoPaint);
+                    canvas.drawText("_", left + buttonWidth2, top + buttonHeight / 1.2f, testInfoPaint);
                 }
             }
         }
