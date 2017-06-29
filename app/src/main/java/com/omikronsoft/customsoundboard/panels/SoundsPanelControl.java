@@ -88,6 +88,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
 
         // experimenting with size
         int textSize = buttonWidth / 8;
+        int textSizePixels = Globals.getInstance().getPixelSize(textSize) / 3;
 
         Globals.getInstance().setLightSize(2*textSize);
 
@@ -126,7 +127,7 @@ public class SoundsPanelControl extends Panel implements IPanelControl {
                 canvas.drawRect(left + outline, top + outline, right - outline, bottom - outline, centerPaint);
 
                 // button label
-                canvas.drawText(sbd.getSoundData().getName(), left + buttonWidth2, top + buttonHeight / 2, textPaint);
+                canvas.drawText(sbd.getSoundData().getName(), left + buttonWidth2, top + buttonHeight / 2 + textSizePixels, textPaint);
 
                 if(sbd.getSoundData().isLooping()){
                     // button info

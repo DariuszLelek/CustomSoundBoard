@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static android.R.attr.delay;
 import static com.omikronsoft.customsoundboard.utils.StorageLocation.REC_FOLDER;
 import static java.lang.Integer.parseInt;
 
@@ -38,9 +37,9 @@ public class SoundDataStorageControl {
     private Resources res;
     private String defSoundFilePrefix, recordedSoundFilePrefix, userFoldersPrefName;
 
-    public static final String SOUND_SAVE_PREFIX = "Sound"; // + "col,row" -> "1,2"
-    public static final String SAVE_FORMAT_SPLITTER = ",";
-    public static final String SAVE_FORMAT_JOINER = "-";
+    static final String SOUND_SAVE_PREFIX = "Sound"; // + "col,row" -> "1,2"
+    static final String SAVE_FORMAT_SPLITTER = ",";
+    static final String SAVE_FORMAT_JOINER = "-";
 
     private Context context;
 
@@ -59,15 +58,12 @@ public class SoundDataStorageControl {
         audioFileExtensions.addAll(Arrays.asList(res.getString(R.string.audio_file_types).split(SAVE_FORMAT_SPLITTER)));
 
         loadUserFolders();
-
         loadData();
     }
 
     public void loadData() {
-        Globals.getInstance().setDataLoading(true);
         loadDefaultSounds();
         loadUserFoldersSounds();
-        Globals.getInstance().setDataLoading(false);
     }
 
     public void saveSoundData(SoundData sd) {

@@ -25,7 +25,7 @@ public class SoundButtonData {
 
     void processClick() {
         if (soundData != null && soundData.getMedia() != null) {
-            int radius = (int) area.width() / 3 > (int) area.height() / 3 ? (int) area.height() / 3 : (int) area.width() / 3;
+            int radius = (int) area.width() / 2 > (int) area.height() / 2 ? (int) area.height() / 2 : (int) area.width() / 2;
 
             if(soundData.isLooping()){
                 if(AudioPlayer.getInstance().isLooping(soundData.getMedia())){
@@ -48,10 +48,6 @@ public class SoundButtonData {
 
     void setLightLocation(PointF lightLoc){
         this.lightLoc = lightLoc;
-    }
-
-    public PointF getLightLoc() {
-        return lightLoc;
     }
 
     void setArea(RectF area) {

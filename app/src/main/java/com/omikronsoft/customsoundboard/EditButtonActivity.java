@@ -118,35 +118,40 @@ public class EditButtonActivity extends Activity {
         endBar.setRotation(180);
         volumeBar.setMax(100);
 
-        int soundEditMinDurationPercent;
-        if (media.equals(sbd.getSoundData().getMedia())) {
-            soundEditDuration = sbd.getSoundData().getClipDuration();
-            soundEditMinDurationPercent = 10;
+        final int soundEditMinDurationPercent = 10;
 
-            startBar.setMax(soundEditDuration);
-            endBar.setMax(soundEditDuration);
-            volumeBar.setProgress(sbd.getSoundData().getVolume());
-            startBar.setProgress(sbd.getSoundData().getStartOffset());
-            endBar.setProgress(sbd.getSoundData().getEndOffset());
-            String volumeString = String.valueOf(volumeBar.getProgress()) + "%";
-            editSoundVolume.setText(volumeString);
-            editSoundStartOff.setText(String.valueOf(startBar.getProgress()));
-            editSoundEndOff.setText(String.valueOf(endBar.getProgress()));
-            switchLooping.setChecked(sbd.getSoundData().isLooping());
-        } else {
-            soundEditDuration = media.getDuration();
-            soundEditMinDurationPercent = 10;
+        if(media == null){
+            media = sbd.getSoundData().getMedia();
+        }
 
-            startBar.setMax(soundEditDuration);
-            endBar.setMax(soundEditDuration);
-            volumeBar.setProgress(100);
-            startBar.setProgress(0);
-            endBar.setProgress(0);
-            String volumeString = String.valueOf(volumeBar.getProgress()) + "%";
-            editSoundVolume.setText(volumeString);
-            editSoundStartOff.setText(String.valueOf(startBar.getProgress()));
-            editSoundEndOff.setText(String.valueOf(endBar.getProgress()));
-            switchLooping.setChecked(false);
+        if(media != null){
+            if (media.equals(sbd.getSoundData().getMedia())) {
+                soundEditDuration = sbd.getSoundData().getClipDuration();
+
+                startBar.setMax(soundEditDuration);
+                endBar.setMax(soundEditDuration);
+                volumeBar.setProgress(sbd.getSoundData().getVolume());
+                startBar.setProgress(sbd.getSoundData().getStartOffset());
+                endBar.setProgress(sbd.getSoundData().getEndOffset());
+                String volumeString = String.valueOf(volumeBar.getProgress()) + "%";
+                editSoundVolume.setText(volumeString);
+                editSoundStartOff.setText(String.valueOf(startBar.getProgress()));
+                editSoundEndOff.setText(String.valueOf(endBar.getProgress()));
+                switchLooping.setChecked(sbd.getSoundData().isLooping());
+            } else {
+                soundEditDuration = media.getDuration();
+
+                startBar.setMax(soundEditDuration);
+                endBar.setMax(soundEditDuration);
+                volumeBar.setProgress(100);
+                startBar.setProgress(0);
+                endBar.setProgress(0);
+                String volumeString = String.valueOf(volumeBar.getProgress()) + "%";
+                editSoundVolume.setText(volumeString);
+                editSoundStartOff.setText(String.valueOf(startBar.getProgress()));
+                editSoundEndOff.setText(String.valueOf(endBar.getProgress()));
+                switchLooping.setChecked(false);
+            }
         }
 
         lockEndBar = false;
