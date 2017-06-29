@@ -15,26 +15,13 @@ public class AudioPlayer {
     private static AudioPlayer instance;
     private final Map<MediaPlayer, Integer> activeMedia;
     private final Map<MediaPlayer, Integer> activeLoopingMedia;
-    private MediaPlayer listItemCurrentlyPlaying;
     private int threadNum;
 
     private AudioPlayer() {
         activeMedia = new HashMap<>();
         activeLoopingMedia = new HashMap<>();
+
         threadNum = 0;
-    }
-
-    public void playListItem(MediaPlayer player, int offset) {
-        stopPlayingListItem();
-        listItemCurrentlyPlaying = player;
-        listItemCurrentlyPlaying.seekTo(offset);
-        listItemCurrentlyPlaying.start();
-    }
-
-    public void stopPlayingListItem() {
-        if (listItemCurrentlyPlaying != null && listItemCurrentlyPlaying.isPlaying()) {
-            listItemCurrentlyPlaying.pause();
-        }
     }
 
     public void loopWithOffset(final MediaPlayer player, final int startOffset, final int endOffset){
@@ -73,21 +60,8 @@ public class AudioPlayer {
         }
     }
 
-    private void playWithOffset(MediaPlayer player, int startOffset){
+    public void playWithOffset(MediaPlayer player, int startOffset){
         if (!activeMedia.containsKey(player)) {
-            activeMedia.put(player, threadNum);
-        }
-
-        if (player.isPlaying()) {
-            player.pause();
-        }
-
-        player.seekTo(startOffset);
-        player.start();
-    }
-
-    public void playWithOffset(final MediaPlayer player,final int startOffset,final int endOffset) {
-        if(!activeMedia.containsKey(player)){
             activeMedia.put(player, threadNum);
         }else{
             activeMedia.put(player, activeMedia.get(player) + 1);
@@ -99,6 +73,10 @@ public class AudioPlayer {
 
         player.seekTo(startOffset);
         player.start();
+    }
+
+    public void playWithOffset(final MediaPlayer player,final int startOffset,final int endOffset) {
+        playWithOffset(player, startOffset);
 
         if(endOffset > 0){
             new Handler().postDelayed(new Runnable() {
@@ -125,7 +103,7 @@ public class AudioPlayer {
     }
 
     public void stopMedia(MediaPlayer media) {
-        if(activeMedia.containsKey(media)){
+        if(media!= null && activeMedia.containsKey(media)){
             media.pause();
             activeMedia.remove(media);
         }

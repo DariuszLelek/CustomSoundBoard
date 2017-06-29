@@ -175,7 +175,8 @@ public class EditButtonActivity extends Activity {
         startBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                editSoundStartOff.setText(progress);
+                String progressString = String.valueOf(progress);
+                editSoundStartOff.setText(progressString);
 
                 if (!lockStartBar) {
                     if (progress + minSoundDuration + endBar.getProgress() > soundEditDuration) {
@@ -202,7 +203,8 @@ public class EditButtonActivity extends Activity {
         endBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                editSoundEndOff.setText(progress);
+                String progressString = String.valueOf(progress);
+                editSoundEndOff.setText(progressString);
 
                 if (!lockEndBar) {
                     if (progress + minSoundDuration + startBar.getProgress() > soundEditDuration) {
@@ -229,12 +231,14 @@ public class EditButtonActivity extends Activity {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (media.isPlaying()) {
-                    AudioPlayer.getInstance().stopMedia(media);
-                } else {
-                    float volume = volumeBar.getProgress() / 100f;
-                    media.setVolume(volume, volume);
-                    AudioPlayer.getInstance().playWithOffset(media, startBar.getProgress(), endBar.getProgress());
+                if(media != null){
+                    if (media.isPlaying()) {
+                        AudioPlayer.getInstance().stopMedia(media);
+                    } else {
+                        float volume = volumeBar.getProgress() / 100f;
+                        media.setVolume(volume, volume);
+                        AudioPlayer.getInstance().playWithOffset(media, startBar.getProgress(), endBar.getProgress());
+                    }
                 }
             }
         });
@@ -267,19 +271,17 @@ public class EditButtonActivity extends Activity {
 
     private void prepareEditButton() {
         if (media != null || (sbd.getSoundData() != null && sbd.getSoundData().getMedia() != null)) {
-            media = media == null ? sbd.getSoundData().getMedia() : media;
             (findViewById(R.id.btn_edit)).setEnabled(true);
         } else {
             (findViewById(R.id.btn_edit)).setEnabled(false);
         }
-
     }
 
     private void prepareListViewListener() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AudioPlayer.getInstance().stopPlayingListItem();
+                AudioPlayer.getInstance().stopMedia(media);
                 selectedListItem = (String) (listView.getItemAtPosition(position));
                 editTextName.setText(SoundDataStorageControl.getInstance().truncFilePrefix(selectedListItem));
 
@@ -303,7 +305,7 @@ public class EditButtonActivity extends Activity {
 
                 if (media != null) {
                     try {
-                        AudioPlayer.getInstance().playListItem(media, 0);
+                        AudioPlayer.getInstance().playWithOffset(media, 0, 0);
                     } catch (NumberFormatException e) {
                         // todo add log
                         e.printStackTrace();
@@ -347,6 +349,7 @@ public class EditButtonActivity extends Activity {
             @Override
             public void onClick(View v) {
                 prepareEditSoundDialog();
+                AudioPlayer.getInstance().stopMedia(media);
                 editSoundDialog.show();
             }
         });
