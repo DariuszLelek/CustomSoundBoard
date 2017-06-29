@@ -211,13 +211,16 @@ public class SoundDataStorageControl {
         return result.toString();
     }
 
+    // todo refactor this
     private boolean dataIsValid(String[] parts) {
-        boolean valid = true;
         for (String part : parts) {
             if (part.isEmpty()) {
-                valid = false;
-                break;
+                return false;
             }
+        }
+
+        if (parts.length < 2) {
+            return false;
         }
 
         try {
@@ -226,10 +229,10 @@ public class SoundDataStorageControl {
         } catch (NumberFormatException e) {
             // todo add log
             e.printStackTrace();
-            valid = false;
+            return false;
         }
 
-        return valid;
+        return true;
     }
 
     private void loadUserFolders() {
@@ -255,6 +258,7 @@ public class SoundDataStorageControl {
         if (!savedData.isEmpty()) {
             String[] parts = savedData.split(SAVE_FORMAT_SPLITTER);
 
+            // todo refactor this
             if (dataIsValid(parts)) {
                 String name = parts[0];
                 StorageLocation storageLoc = StorageLocation.fromInteger(parseInt(parts[1]));
@@ -269,7 +273,6 @@ public class SoundDataStorageControl {
 
                 MediaPlayer media = getMedia(storageLoc, fileName);
 
-                // todo refactor this
                 // check if sound is available in storage
                 if (media != null) {
                     result = new SoundData(column, row, name, media, startOffset, endOffset, fileName, looping, volume);

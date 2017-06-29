@@ -9,6 +9,7 @@
     <integer name="background_edge_offset">5</integer>
 
     <integer name="button_text_sp">17</integer>
+    <integer name="button_text_sound_sp">50</integer>
     <integer name="button_text_info_sp">10</integer>
 
     <integer name="sound_button_rows">4</integer>
