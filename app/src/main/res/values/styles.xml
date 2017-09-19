@@ -31,4 +31,10 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <style name="BackTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/back</item>
+    </style>
+
 </resources>

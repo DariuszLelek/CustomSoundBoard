@@ -24,7 +24,7 @@ public class Globals {
     private int lightSize;
 
     public final static int ADD_HEIGHT = 50;
-    public final static boolean ADS_ENABLED = true;
+    public final static boolean ADS_ENABLED = false;
     private final static int MAX_FPS = 30;
     private final String DEF_PREF_KEY = "DefaultButtonsSetup";
 
