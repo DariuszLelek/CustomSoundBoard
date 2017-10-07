@@ -74,10 +74,6 @@ public class EditButtonActivity extends Activity {
         TextView t = (TextView) findViewById(R.id.button_label);
         listView = (ListView) findViewById(R.id.list);
 
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = (int) (height / 2.2f);
-        listView.setLayoutParams(new LinearLayout.LayoutParams(params));
-
         itemsToDisplay = new ArrayList<>();
         selectedListItem = sbd.getSoundData().getFileName();
 

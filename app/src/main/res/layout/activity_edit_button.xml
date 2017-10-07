@@ -96,31 +96,33 @@
             android:layout_height="match_parent">
 
             <ListView
-                android:layout_width="match_parent"
                 android:id="@+id/list"
-                android:layout_height="100dp" />
-
-            <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <LinearLayout
                 android:id="@+id/linear2"
-                android:gravity="bottom">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:gravity="bottom"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:text="Directory:"
+                        android:id="@+id/textView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/textView"
                         android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Directory:"
                         android:textAlignment="center"
-                        android:textSize="14sp"
-                        android:gravity="center" />
+                        android:textSize="14sp" />
 
                     <CheckBox
                         android:id="@+id/checkBox"
@@ -132,37 +134,37 @@
                         android:textSize="12sp" />
 
                     <CheckBox
-                        android:text="User"
+                        android:id="@+id/checkBox2"
+                        style="@android:style/Widget.CompoundButton.CheckBox"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/checkBox2"
                         android:layout_weight="1"
-                        android:textSize="12sp"
-                        style="@android:style/Widget.CompoundButton.CheckBox" />
+                        android:text="User"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp"
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="12dp">
+                    android:paddingTop="6dp">
 
                     <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:paddingRight="13dp"
-                        android:paddingLeft="16dp">
+                        android:paddingLeft="16dp"
+                        android:paddingRight="13dp">
 
                         <Button
-                            android:text="OK"
+                            android:id="@+id/btn_ok"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:id="@+id/btn_ok" />
+                            android:text="OK" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -173,10 +175,10 @@
                         android:paddingRight="16dp">
 
                         <Button
-                            android:text="Cancel"
+                            android:id="@+id/btn_cancel"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:id="@+id/btn_cancel" />
+                            android:text="Cancel" />
                     </FrameLayout>
 
                 </LinearLayout>
