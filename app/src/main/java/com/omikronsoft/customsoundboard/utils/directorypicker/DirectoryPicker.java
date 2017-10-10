@@ -50,7 +50,7 @@ public class DirectoryPicker extends ListActivity {
         setTitle(dir.getAbsolutePath());
         Button btnChoose = (Button) findViewById(R.id.btnChoose);
 
-        if(extras.getBoolean(ROOT_FLAG, true)){
+        if(extras != null && extras.getBoolean(ROOT_FLAG, true)){
             btnChoose.setEnabled(false);
             btnChoose.setText("Select Directory");
         }else{

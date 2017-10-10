@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.media.AudioManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +47,8 @@ public class SoundBoardActivity extends AppCompatActivity {
         display.getSize(size);
         ApplicationContext.getInstance().init(getApplicationContext());
         Globals globals = Globals.getInstance();
+
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         SharedPreferences prefs = this.getSharedPreferences("CustomSoundBoard", Context.MODE_PRIVATE);
 
